@@ -1,0 +1,95 @@
+{
+  "projectType": "general",
+  "projectName": "Regions Unexplored",
+  "projectDescription": "A Minecraft mod that adds 70+ new biomes to the Overworld and Nether with custom blocks, plants, and world generation.",
+  "theme": "palm",
+  "primaryColor": "#2D8B57",
+  "lightColor": "#7EC8A3",
+  "darkColor": "#1B5E3F",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "compatibility"
+            ]
+          },
+          {
+            "group": "Biomes",
+            "pages": [
+              "biomes/overview",
+              "biomes/overworld",
+              "biomes/caves",
+              "biomes/nether"
+            ]
+          },
+          {
+            "group": "Content",
+            "pages": [
+              "content/blocks",
+              "content/plants-and-flowers",
+              "content/wood-types",
+              "content/items"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/overview",
+              "configuration/biome-toggles",
+              "configuration/client-options"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "For Developers",
+        "groups": [
+          {
+            "group": "Development",
+            "pages": [
+              "developers/getting-started",
+              "developers/project-structure",
+              "developers/building"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "api/registries",
+              "api/biomes",
+              "api/blocks-and-items",
+              "api/world-generation"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "70+ new biomes across Overworld, caves, and Nether dimensions",
+    "Custom blocks including wood types, plants, flowers, and decorative blocks",
+    "Configurable biome toggles and client-side options",
+    "Multi-platform support for Fabric and NeoForge mod loaders",
+    "Custom world generation features including trees, foliage placers, and decorators",
+    "Unique cave biomes with special blocks like Prismarite and Redstone formations",
+    "Integration with Biolith for biome placement"
+  ],
+  "publicApiSurface": [
+    "RUBiomes - 70+ biome resource keys (ALPHA_GROVE, ANCIENT_DELTA, etc.)",
+    "RUBlocks - Block registrations including wood sets, natural sets, plants, and cave blocks",
+    "RUItems - Item registrations including food items and utilities",
+    "RUEntityTypes - Custom entity types (boats and chest boats)",
+    "RUCreativeModeTabs - Creative mode tab integration",
+    "RuCommonConfig - Biome toggle configuration options",
+    "RuClientConfig - Client-side configuration (particles, colors)",
+    "RegionsUnexplored.id() - Resource identifier helper method",
+    "WoodSet - API for custom wood type sets",
+    "NaturalSet - API for natural block sets (branches, shrubs, saplings)"
+  ]
+}
