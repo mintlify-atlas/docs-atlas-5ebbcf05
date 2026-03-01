@@ -1,0 +1,268 @@
+---
+title: Biomes API
+description: RUBiomes registry and biome resource keys
+---
+
+## Overview
+
+The `RUBiomes` interface provides resource keys for all biomes added by Regions Unexplored. Biomes are registered as data-driven content and referenced through `ResourceKey<Biome>` instances.
+
+## Biome categories
+
+### Forest biomes
+
+<CardGroup cols={2}>
+  <Card title="Deciduous forest">
+    Temperate forest with varied tree types
+  </Card>
+  <Card title="Autumnal maple forest">
+    Forest featuring colorful maple trees
+  </Card>
+  <Card title="Maple forest">
+    Dense maple tree coverage
+  </Card>
+  <Card title="Silver birch forest">
+    Birch variant with silver-toned leaves
+  </Card>
+</CardGroup>
+
+```java Forest biome keys
+ResourceKey<Biome> AUTUMNAL_MAPLE_FOREST = key("autumnal_maple_forest");
+ResourceKey<Biome> BAMBOO_FOREST = key("bamboo_forest");
+ResourceKey<Biome> MAGNOLIA_WOODLAND = key("magnolia_woodland");
+ResourceKey<Biome> DECIDUOUS_FOREST = key("deciduous_forest");
+ResourceKey<Biome> MAPLE_FOREST = key("maple_forest");
+ResourceKey<Biome> MAUVE_HILLS = key("mauve_hills");
+ResourceKey<Biome> ORCHARD = key("orchard");
+ResourceKey<Biome> SILVER_BIRCH_FOREST = key("silver_birch_forest");
+ResourceKey<Biome> TEMPERATE_GROVE = key("temperate_grove");
+ResourceKey<Biome> WILLOW_FOREST = key("willow_forest");
+```
+
+### Taiga biomes
+
+```java Taiga biome keys
+ResourceKey<Biome> BLACKWOOD_TAIGA = key("blackwood_taiga");
+ResourceKey<Biome> BOREAL_TAIGA = key("boreal_taiga");
+ResourceKey<Biome> COLD_BOREAL_TAIGA = key("cold_boreal_taiga");
+ResourceKey<Biome> GOLDEN_BOREAL_TAIGA = key("golden_boreal_taiga");
+ResourceKey<Biome> PINE_TAIGA = key("pine_taiga");
+ResourceKey<Biome> FROZEN_PINE_TAIGA = key("frozen_pine_taiga");
+ResourceKey<Biome> REDWOODS = key("redwoods");
+ResourceKey<Biome> SPARSE_REDWOODS = key("sparse_redwoods");
+```
+
+### Plains biomes
+
+```java Plains biome keys
+ResourceKey<Biome> BARLEY_FIELDS = key("barley_fields");
+ResourceKey<Biome> FLOWER_FIELDS = key("flower_fields");
+ResourceKey<Biome> GRASSLAND = key("grassland");
+ResourceKey<Biome> CLOVER_PLAINS = key("clover_plains");
+ResourceKey<Biome> ROCKY_MEADOW = key("rocky_meadow");
+ResourceKey<Biome> POPPY_FIELDS = key("poppy_fields");
+ResourceKey<Biome> PRAIRIE = key("prairie");
+ResourceKey<Biome> PUMPKIN_FIELDS = key("pumpkin_fields");
+ResourceKey<Biome> SHRUBLAND = key("shrubland");
+```
+
+### Wetland biomes
+
+```java Wetland biome keys
+ResourceKey<Biome> BAYOU = key("bayou");
+ResourceKey<Biome> OLD_GROWTH_BAYOU = key("old_growth_bayou");
+ResourceKey<Biome> EUCALYPTUS_FOREST = key("eucalyptus_forest");
+ResourceKey<Biome> FEN = key("fen");
+ResourceKey<Biome> FUNGAL_FEN = key("fungal_fen");
+ResourceKey<Biome> MARSH = key("marsh");
+ResourceKey<Biome> RAINFOREST = key("rainforest");
+ResourceKey<Biome> SPARSE_RAINFOREST = key("sparse_rainforest");
+```
+
+### Arid biomes
+
+```java Arid biome keys
+ResourceKey<Biome> BAOBAB_SAVANNA = key("baobab_savanna");
+ResourceKey<Biome> DRY_BUSHLAND = key("dry_bushland");
+ResourceKey<Biome> JOSHUA_DESERT = key("joshua_desert");
+ResourceKey<Biome> OUTBACK = key("outback");
+ResourceKey<Biome> SAGUARO_DESERT = key("saguaro_desert");
+ResourceKey<Biome> STEPPE = key("steppe");
+```
+
+### Mountain biomes
+
+```java Mountain biome keys
+ResourceKey<Biome> ARID_MOUNTAINS = key("arid_mountains");
+ResourceKey<Biome> HIGHLAND_FIELDS = key("highland_fields");
+ResourceKey<Biome> MOUNTAINS = key("mountains");
+ResourceKey<Biome> PINE_SLOPES = key("pine_slopes");
+ResourceKey<Biome> TOWERING_CLIFFS = key("towering_cliffs");
+```
+
+### Coastal biomes
+
+```java Coastal biome keys
+ResourceKey<Biome> CHALK_CLIFFS = key("chalk_cliffs");
+ResourceKey<Biome> GRASSY_BEACH = key("grassy_beach");
+ResourceKey<Biome> GRAVEL_BEACH = key("gravel_beach");
+```
+
+### Aquatic biomes
+
+```java Aquatic biome keys
+ResourceKey<Biome> ALPHA_GROVE = key("alpha_grove");
+ResourceKey<Biome> COLD_RIVER = key("cold_river");
+ResourceKey<Biome> HYACINTH_DEEPS = key("hyacinth_deeps");
+ResourceKey<Biome> MUDDY_RIVER = key("muddy_river");
+ResourceKey<Biome> ROCKY_REEF = key("rocky_reef");
+ResourceKey<Biome> TROPICAL_RIVER = key("tropical_river");
+ResourceKey<Biome> TROPICS = key("tropics");
+```
+
+### Frozen biomes
+
+```java Frozen biome keys
+ResourceKey<Biome> COLD_DECIDUOUS_FOREST = key("cold_deciduous_forest");
+ResourceKey<Biome> FROZEN_TUNDRA = key("frozen_tundra");
+ResourceKey<Biome> ICY_HEIGHTS = key("icy_heights");
+ResourceKey<Biome> SPIRES = key("spires");
+```
+
+### Cave biomes
+
+```java Cave biome keys
+ResourceKey<Biome> ANCIENT_DELTA = key("ancient_delta");
+ResourceKey<Biome> BIOSHROOM_CAVES = key("bioshroom_caves");
+ResourceKey<Biome> PRISMACHASM = key("prismachasm");
+ResourceKey<Biome> REDSTONE_CAVES = key("redstone_caves");
+ResourceKey<Biome> REDSTONE_ABYSS = key("redstone_abyss");
+ResourceKey<Biome> SCORCHING_CAVES = key("scorching_caves");
+```
+
+### Nether biomes
+
+```java Nether biome keys
+ResourceKey<Biome> ASHEN_WOODLAND = key("ashen_woodland");
+ResourceKey<Biome> BLACKSTONE_BASIN = key("blackstone_basin");
+ResourceKey<Biome> INFERNAL_HOLT = key("infernal_holt");
+ResourceKey<Biome> GLISTERING_MEADOW = key("glistering_meadow");
+ResourceKey<Biome> MYCOTOXIC_UNDERGROWTH = key("mycotoxic_undergrowth");
+```
+
+## Villager type mapping
+
+The `init()` method maps biomes to villager types, determining villager appearance in each biome:
+
+```java RUBiomes.java:92-103
+static void init() {
+    // Forest biomes use plains villagers
+    putVillagerBiome(AUTUMNAL_MAPLE_FOREST, VillagerType.PLAINS);
+    putVillagerBiome(MAGNOLIA_WOODLAND, VillagerType.PLAINS);
+    putVillagerBiome(DECIDUOUS_FOREST, VillagerType.PLAINS);
+    
+    // Taiga biomes use taiga villagers
+    putVillagerBiome(BLACKWOOD_TAIGA, VillagerType.TAIGA);
+    putVillagerBiome(BOREAL_TAIGA, VillagerType.TAIGA);
+    
+    // Desert biomes use desert villagers
+    putVillagerBiome(JOSHUA_DESERT, VillagerType.DESERT);
+    // ...
+}
+```
+
+### Villager type reference
+
+<ResponseField name="VillagerType.PLAINS" type="VillagerType">
+  Used for temperate forest, plains, and grassland biomes
+</ResponseField>
+
+<ResponseField name="VillagerType.TAIGA" type="VillagerType">
+  Used for cold forest and mountain biomes
+</ResponseField>
+
+<ResponseField name="VillagerType.DESERT" type="VillagerType">
+  Used for hot, arid desert biomes
+</ResponseField>
+
+<ResponseField name="VillagerType.SAVANNA" type="VillagerType">
+  Used for savanna and dry bushland biomes
+</ResponseField>
+
+<ResponseField name="VillagerType.JUNGLE" type="VillagerType">
+  Used for rainforest and tropical biomes
+</ResponseField>
+
+<ResponseField name="VillagerType.SWAMP" type="VillagerType">
+  Used for bayou, fen, and marsh biomes
+</ResponseField>
+
+<ResponseField name="VillagerType.SNOW" type="VillagerType">
+  Used for frozen and icy biomes
+</ResponseField>
+
+## Usage examples
+
+<CodeGroup>
+```java Checking current biome
+// In a world context
+Biome currentBiome = level.getBiome(pos).value();
+ResourceKey<Biome> biomeKey = level.getBiome(pos).unwrapKey().orElse(null);
+
+if (biomeKey == RUBiomes.ALPHA_GROVE) {
+    // Special logic for Alpha Grove
+}
+```
+
+```java Biome-specific features
+// Add features to specific biomes
+BiomeModifications.addFeature(
+    BiomeSelectors.includeByKey(RUBiomes.MAPLE_FOREST),
+    GenerationStep.Decoration.VEGETAL_DECORATION,
+    RUPlacedFeatures.MAPLE_TREE
+);
+```
+
+```java Custom villager spawning
+// Check villager type for a biome
+VillagerType type = VillagerType.BY_BIOME.get(RUBiomes.BAYOU);
+// Returns VillagerType.SWAMP
+```
+</CodeGroup>
+
+## Helper methods
+
+<ParamField path="key" type="private static ResourceKey<Biome>">
+  Creates a biome resource key with the mod namespace
+  
+  <Expandable title="parameters">
+    <ParamField path="name" type="String" required>
+      The biome name (without namespace)
+    </ParamField>
+  </Expandable>
+  
+  <Expandable title="implementation">
+    ```java RUBiomes.java:84-86
+    private static ResourceKey<Biome> key(String name) {
+        return RegionsUnexplored.key(Registries.BIOME, name);
+    }
+    ```
+  </Expandable>
+</ParamField>
+
+<ParamField path="putVillagerBiome" type="private static void">
+  Associates a biome with a villager type
+  
+  <Expandable title="parameters">
+    <ParamField path="key" type="ResourceKey<Biome>" required>
+      The biome to configure
+    </ParamField>
+    <ParamField path="type" type="VillagerType" required>
+      The villager type for this biome
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<Tip>
+All biome resource keys are public constants that can be referenced directly from the `RUBiomes` interface.
+</Tip>

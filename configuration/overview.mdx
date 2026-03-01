@@ -1,0 +1,163 @@
+---
+title: Configuration system
+description: Learn how to customize Regions Unexplored using configuration files
+---
+
+Regions Unexplored uses TOML configuration files to customize biomes, worldgen features, and client-side settings. Configuration files are automatically generated when you first launch the game with the mod installed.
+
+## Configuration files
+
+Two configuration files are available:
+
+<CardGroup cols={2}>
+  <Card title="Common config" icon="globe" href="/configuration/biome-toggles">
+    Server-side settings for biome toggles and worldgen features
+  </Card>
+  <Card title="Client config" icon="palette" href="/configuration/client-options">
+    Client-side settings for visual effects and UI preferences
+  </Card>
+</CardGroup>
+
+## File locations
+
+Configuration files are stored in your game directory's config folder:
+
+<CodeGroup>
+```text Forge/NeoForge
+config/regions_unexplored-common.toml
+config/regions_unexplored-client.toml
+```
+
+```text Fabric
+config/regions_unexplored-common.toml
+config/regions_unexplored-client.toml
+```
+</CodeGroup>
+
+## How configuration works
+
+<Steps>
+  <Step title="Automatic generation">
+    Config files are created automatically on first launch with default values and helpful comments
+  </Step>
+  
+  <Step title="Edit values">
+    Open the `.toml` files in any text editor and modify values according to the comments
+  </Step>
+  
+  <Step title="Apply changes">
+    Most changes require a game restart to take effect. The config files include "Requires restart" notes for settings that need it
+  </Step>
+</Steps>
+
+## Configuration structure
+
+The configuration system uses annotations to organize settings into categories:
+
+- **overworld_biome_toggles** - Enable/disable individual overworld biomes
+- **overworld_cave_biome_toggles** - Enable/disable cave biomes
+- **nether_biome_toggles** - Enable/disable nether biomes
+- **worldgen_surface_rules** - Control surface generation features
+- **client_options** - UI and visual preferences
+- **particles** - Particle effect settings
+- **block_color_options** - Color customization for special blocks
+
+<Note>
+  All configuration values include default values, range restrictions (for numeric values), and comments explaining their purpose in the generated TOML files.
+</Note>
+
+## Validation and safety
+
+The configuration system includes built-in validation:
+
+- **Type checking** - Values are validated against expected types
+- **Range validation** - Numeric values are clamped to allowed ranges
+- **Automatic recovery** - Invalid values fall back to defaults with warnings in the log
+- **Automatic updates** - Missing keys are added automatically when the config is loaded
+
+## Examples
+
+<Tabs>
+  <Tab title="Disable a biome">
+    ```toml config/regions_unexplored-common.toml
+    [overworld_biome_toggles]
+    # Set to false to disable the Baobab Savanna biome
+    TOGGLE_BAOBAB_SAVANNA = false
+    ```
+  </Tab>
+  
+  <Tab title="Adjust particle effects">
+    ```toml config/regions_unexplored-client.toml
+    [particles]
+    # Disable leaf particles
+    LEAVES_PARTICLES = false
+    
+    # Reduce prismarite sparkle rate
+    # Range: [0.0, 5.0]
+    # Default: 1.0
+    PRISMARITE_SPARKLE_RATE = 0.5
+    ```
+  </Tab>
+  
+  <Tab title="Customize colors">
+    ```toml config/regions_unexplored-client.toml
+    [block_color_options]
+    # Sets Eucalyptus colour transition size. Bigger number = bigger distance between colours.
+    # Range: [0.0, 200.0]
+    # Default: 25.0
+    EUCALYPTUS_TRANSITION_SIZE = 50.0
+    
+    # Sets Eucalyptus colour saturation.
+    # Range: [0.0, 1.0]
+    # Default: 0.5
+    EUCALYPTUS_SATURATION = 0.7
+    ```
+  </Tab>
+</Tabs>
+
+## Reloading configuration
+
+<Warning>
+  Configuration changes require a full game restart to take effect. The mod does not support hot-reloading of configuration files during gameplay.
+</Warning>
+
+To apply configuration changes:
+
+1. Save your changes to the TOML file
+2. Close Minecraft completely
+3. Restart the game
+4. Check the logs for any configuration warnings or errors
+
+## Troubleshooting
+
+If configuration changes aren't working:
+
+<AccordionGroup>
+  <Accordion title="Config file not found">
+    Launch the game at least once to generate the default configuration files. They will be created automatically in the `config` folder.
+  </Accordion>
+  
+  <Accordion title="Changes not applying">
+    Ensure you:
+    - Saved the TOML file after making changes
+    - Completely restarted the game (not just returned to the main menu)
+    - Check the game log for any configuration errors
+  </Accordion>
+  
+  <Accordion title="Invalid value errors">
+    Check the logs for specific error messages. The config system will:
+    - Log warnings about type mismatches
+    - Log info about missing keys being added
+    - Use default values when loaded values are invalid
+    
+    Delete the config file to regenerate it with defaults if needed.
+  </Accordion>
+  
+  <Accordion title="TOML syntax errors">
+    TOML files use specific syntax. Common mistakes:
+    - Strings should be in quotes: `"value"`
+    - Booleans are lowercase: `true` or `false`
+    - Decimals need a decimal point: `1.0` not `1`
+    - Section headers use brackets: `[category_name]`
+  </Accordion>
+</AccordionGroup>

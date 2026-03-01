@@ -1,0 +1,464 @@
+---
+title: Blocks and items API
+description: RUBlocks and RUItems registry interfaces with block sets
+---
+
+## Blocks API
+
+The `RUBlocks` interface contains all block registrations, organized by category and including specialized block sets for wood and natural variants.
+
+### Block registration pattern
+
+Blocks are registered using the `Supplier<Block>` pattern with factory functions:
+
+```java Example block registration
+// From RUBlocks.java:51-52
+Supplier<Block> PRISMOSS = register(
+    "prismoss",
+    p -> new PrismossBlock(p
+        .mapColor(MapColor.COLOR_LIGHT_GREEN)
+        .sound(SoundType.STONE)
+        .randomTicks()
+        .strength(1.5f, 6f)
+        .requiresCorrectToolForDrops()
+    )
+);
+```
+
+### Registration helper methods
+
+The `RUBlockUtils` class provides factory methods for common block types:
+
+<CodeGroup>
+```java Wood blocks
+// Create a log block
+Block log = RUBlockUtils.log(
+    properties,
+    RotatedPillarBlock::new,
+    MapColor.WOOD,      // plank color
+    MapColor.WOOD,      // bark color
+    SoundType.WOOD,
+    false               // fireproof
+);
+
+// Create planks
+Block planks = RUBlockUtils.planks(
+    properties,
+    MapColor.WOOD,
+    SoundType.WOOD,
+    false
+);
+```
+
+```java Stairs and slabs
+// Create stairs
+StairBlock stairs = RUBlockUtils.stairs(
+    properties,
+    MapColor.WOOD,
+    SoundType.WOOD,
+    false
+);
+
+// Create slab
+SlabBlock slab = RUBlockUtils.slab(
+    properties,
+    MapColor.WOOD,
+    SoundType.WOOD,
+    false
+);
+```
+
+```java Doors and fences
+// Create door
+DoorBlock door = RUBlockUtils.door(
+    properties,
+    MapColor.WOOD,
+    SoundType.WOOD,
+    BlockSetType.OAK,
+    false
+);
+
+// Create fence
+FenceBlock fence = RUBlockUtils.fence(
+    properties,
+    MapColor.WOOD,
+    SoundType.WOOD,
+    false
+);
+```
+</CodeGroup>
+
+## Block categories
+
+### Cave blocks
+
+```java Prismoss blocks
+Supplier<Block> PRISMOSS = register("prismoss", ...);
+Supplier<Block> DEEPSLATE_PRISMOSS = register("deepslate_prismoss", ...);
+Supplier<Block> HANGING_PRISMARITE = register("hanging_prismarite", ...);
+Supplier<Block> LARGE_PRISMARITE_CLUSTER = register("large_prismarite_cluster", ...);
+Supplier<Block> PRISMAGLASS = register("prismaglass", ...);
+Supplier<Block> PRISMARITE_CLUSTER = register("prismarite_cluster", ...);
+```
+
+```java Redstone blocks
+Supplier<Block> POINTED_REDSTONE = register("pointed_redstone", ...);
+Supplier<Block> RAW_REDSTONE_BLOCK = register("raw_redstone_block", ...);
+Supplier<Block> REDSTONE_BUD = register("redstone_bud", ...);
+Supplier<Block> REDSTONE_BULB = register("redstone_bulb", ...);
+```
+
+### Plants
+
+```java Flowers
+Supplier<Block> ALPHA_DANDELION = register("alpha_dandelion",
+    p -> new RuFlowerBlock(MobEffects.JUMP, 5, p), Blocks.DANDELION);
+Supplier<Block> BLEEDING_HEART = register("bleeding_heart",
+    p -> new RuSnowFlowerBlock(MobEffects.POISON, 9, p), Blocks.DANDELION);
+Supplier<Block> BLUE_LUPINE = register("blue_lupine",
+    p -> new RuFlowerBlock(MobEffects.SATURATION, 4, p), Blocks.DANDELION);
+```
+
+```java Grass and vegetation
+Supplier<Block> MEDIUM_GRASS = register("medium_grass", RuPlantBlock::new, Blocks.SHORT_GRASS);
+Supplier<Block> SANDY_GRASS = register("sandy_grass", RuSandyPlantBlock::new, Blocks.SHORT_GRASS);
+Supplier<Block> STEPPE_GRASS = register("steppe_grass", p -> new RuPlantBlock(p
+    .pushReaction(PushReaction.DESTROY)
+    .ignitedByLava()
+    .replaceable()
+    .noCollission()
+    .instabreak()
+    .sound(SoundType.GRASS)
+    .offsetType(BlockBehaviour.OffsetType.XZ)));
+```
+
+### Dirt variants
+
+```java Peat dirt
+Supplier<Block> PEAT_GRASS_BLOCK = register("peat_grass_block", PeatGrassBlock::new, Blocks.GRASS_BLOCK);
+Supplier<Block> PEAT_DIRT = register("peat_dirt", TillableDirtBlock::new, Blocks.DIRT);
+Supplier<Block> PEAT_DIRT_PATH = register("peat_dirt_path", ...);
+Supplier<Block> PEAT_COARSE_DIRT = register("peat_coarse_dirt", TillableDirtBlock::new, Blocks.COARSE_DIRT);
+Supplier<Block> PEAT_FARMLAND = register("peat_farmland", ...);
+```
+
+```java Silt dirt
+Supplier<Block> SILT_GRASS_BLOCK = register("silt_grass_block", SiltGrassBlock::new, Blocks.GRASS_BLOCK);
+Supplier<Block> SILT_DIRT = register("silt_dirt", TillableDirtBlock::new, Blocks.DIRT);
+Supplier<Block> SILT_FARMLAND = register("silt_farmland", ...);
+```
+
+## Wood sets
+
+The `WoodSet` class creates complete sets of wood-related blocks:
+
+### Creating a wood set
+
+```java WoodSet.java:57-68
+public static WoodSet simple(
+    String name,
+    WoodType woodType,
+    SoundType sound,
+    MapColor plankColour,
+    MapColor logColour,
+    boolean fireproof
+) {
+    WoodSet set = new WoodSet(name, fireproof);
+    set.addLogs(name, "log", "wood", sound, plankColour, logColour, fireproof, logFactory, true);
+    set.addCommonWoodBlocks(name, woodType, plankColour, sound, fireproof);
+    if (boat) set.addBoats(name);
+    return set;
+}
+```
+
+### Wood set contents
+
+Each wood set can include:
+
+<ResponseField name="log" type="Block">
+  The main log block
+</ResponseField>
+
+<ResponseField name="wood" type="Block">
+  Bark-covered wood (all sides bark texture)
+</ResponseField>
+
+<ResponseField name="strippedLog" type="Block">
+  Stripped log variant
+</ResponseField>
+
+<ResponseField name="strippedWood" type="Block">
+  Stripped wood variant
+</ResponseField>
+
+<ResponseField name="planks" type="Block">
+  Crafted planks
+</ResponseField>
+
+<ResponseField name="stairs" type="Block">
+  Plank stairs
+</ResponseField>
+
+<ResponseField name="slab" type="Block">
+  Plank slab
+</ResponseField>
+
+<ResponseField name="fence" type="Block">
+  Wooden fence
+</ResponseField>
+
+<ResponseField name="fenceGate" type="Block">
+  Wooden fence gate
+</ResponseField>
+
+<ResponseField name="door" type="Block">
+  Wooden door
+</ResponseField>
+
+<ResponseField name="trapdoor" type="Block">
+  Wooden trapdoor
+</ResponseField>
+
+<ResponseField name="pressurePlate" type="Block">
+  Wooden pressure plate
+</ResponseField>
+
+<ResponseField name="button" type="Block">
+  Wooden button
+</ResponseField>
+
+<ResponseField name="sign" type="Block">
+  Standing sign
+</ResponseField>
+
+<ResponseField name="hangingSign" type="Block">
+  Hanging sign
+</ResponseField>
+
+<ResponseField name="itemBoat" type="Item">
+  Boat item (if enabled)
+</ResponseField>
+
+<ResponseField name="itemChestBoat" type="Item">
+  Chest boat item (if enabled)
+</ResponseField>
+
+### Example wood sets
+
+```java Wood set examples from RUBlocks.java
+WoodSet BAOBAB_WOOD_SET = WoodSet.simple(
+    "baobab",
+    RuWoodTypes.BAOBAB,
+    RUSoundEvents.BAOBAB_SET.baseType(),
+    MapColor.WOOD,
+    MapColor.TERRACOTTA_LIGHT_GRAY,
+    false
+);
+
+WoodSet CYPRESS_WOOD_SET = WoodSet.simple(
+    "cypress",
+    RuWoodTypes.CYPRESS,
+    SoundType.BAMBOO_WOOD,
+    MapColor.WOOD,
+    MapColor.WOOD,
+    false
+);
+
+WoodSet BRIMWOOD_WOOD_SET = BrimwoodWoodSet.brimwood(
+    "brimwood",
+    RuWoodTypes.BRIMWOOD,
+    SoundType.NETHER_WOOD,
+    MapColor.COLOR_BROWN,
+    MapColor.COLOR_ORANGE,
+    true  // fireproof
+);
+```
+
+## Natural sets
+
+The `NaturalSet` class creates sets of natural blocks (leaves, saplings, branches):
+
+### Creating a natural set
+
+```java Creating natural sets
+NaturalSet MAPLE_NATURAL_SET = NaturalSet.create("maple")
+    .withBranch()
+    .withShrub()
+    .withLeaves(small(TintGetter.defaultDarken(0.6f)))
+    .withSapling(RuTreeGrowers.MAPLE);
+
+NaturalSet BAOBAB_NATURAL_SET = NaturalSet.create("baobab")
+    .withBranch()
+    .withShrub()
+    .withLeaves()
+    .withSapling(p -> new RuUltraFromMegaSaplingBlock(RuTreeGrowers.BAOBAB, p));
+```
+
+### Natural set components
+
+<ResponseField name="branch" type="Block">
+  Decorative branch block that can be placed on tree sides
+</ResponseField>
+
+<ResponseField name="shrub" type="Block">
+  Small decorative shrub variant
+</ResponseField>
+
+<ResponseField name="leaves" type="Block">
+  Tree leaves with optional custom tinting
+</ResponseField>
+
+<ResponseField name="sapling" type="Block">
+  Sapling that grows into the tree
+</ResponseField>
+
+<ResponseField name="pottedSapling" type="Block">
+  Flower pot variant of the sapling
+</ResponseField>
+
+### Natural set builder methods
+
+<ParamField path="withBranch" type="NaturalSet">
+  Adds a branch block to the set
+</ParamField>
+
+<ParamField path="withShrub" type="NaturalSet">
+  Adds a shrub block to the set
+</ParamField>
+
+<ParamField path="withLeaves" type="NaturalSet">
+  Adds leaves with optional color and factory
+  
+  <Expandable title="overloads">
+    - `withLeaves()` - Default green leaves
+    - `withLeaves(MapColor color)` - Custom map color
+    - `withLeaves(BlockFactory factory)` - Custom block factory
+    - `withLeaves(MapColor color, BlockFactory factory)` - Both custom
+  </Expandable>
+</ParamField>
+
+<ParamField path="withSapling" type="NaturalSet">
+  Adds sapling and potted sapling
+  
+  <Expandable title="overloads">
+    - `withSapling(TreeGrower grower)` - Standard sapling
+    - `withSapling(BlockFactory factory)` - Custom sapling implementation
+  </Expandable>
+</ParamField>
+
+## Items API
+
+The `RUItems` interface registers items, primarily food items:
+
+### Food items
+
+```java RUItems.java:17-20
+Supplier<Item> SALMONBERRY = RUItemUtils.register(
+    "salmonberry",
+    p -> new BlockItem(RUBlocks.SALMONBERRY_BUSH.get(),
+        p.food(food(3, 0.3f, t -> t)))
+);
+
+Supplier<Item> DUSKMELON_SLICE = RUItemUtils.register(
+    "duskmelon_slice",
+    p -> new BlockItem(RUBlocks.DUSKMELON.get(),
+        p.food(food(5, 1.1f,
+            t -> t.effect(new MobEffectInstance(MobEffects.BLINDNESS, 240), 1))))
+);
+
+Supplier<Item> HANGING_EARLIGHT_FRUIT = RUItemUtils.register(
+    "hanging_earlight_fruit",
+    p -> new BlockItem(RUBlocks.HANGING_EARLIGHT.get(),
+        p.food(food(6, 0.4f,
+            t -> t.effect(new MobEffectInstance(MobEffects.GLOWING, 200), 0.1F))))
+);
+```
+
+### Food properties helper
+
+```java Creating food properties
+public static FoodProperties food(
+    int nutrition,
+    float saturation,
+    UnaryOperator<FoodProperties.Builder> operator
+) {
+    return operator.apply(
+        new FoodProperties.Builder()
+            .nutrition(nutrition)
+            .saturationModifier(saturation)
+    ).build();
+}
+```
+
+<ParamField path="nutrition" type="int" required>
+  Food points restored (half drumsticks)
+</ParamField>
+
+<ParamField path="saturation" type="float" required>
+  Saturation modifier (hidden hunger value)
+</ParamField>
+
+<ParamField path="operator" type="UnaryOperator<FoodProperties.Builder>" required>
+  Builder function to add effects or properties
+</ParamField>
+
+### Item registration
+
+```java Registering items
+public static Supplier<Item> register(String name, ItemFactory factory) {
+    return Registrar.register(
+        BuiltInRegistries.ITEM,
+        name,
+        () -> factory.apply(new Item.Properties())
+    );
+}
+
+public static Supplier<Item> registerBlock(String name, Supplier<Block> block) {
+    return register(name, p -> new BlockItem(block.get(), p));
+}
+```
+
+## Usage examples
+
+<CodeGroup>
+```java Accessing blocks
+// Get a block instance
+Block prismoss = RUBlocks.PRISMOSS.get();
+
+// Get from a wood set
+Block mapleLog = RUBlocks.MAPLE_WOOD_SET.getLog();
+Block maplePlanks = RUBlocks.MAPLE_WOOD_SET.getPlanks();
+
+// Get from a natural set
+Block mapleLeaves = RUBlocks.MAPLE_NATURAL_SET.getLeaves();
+Block mapleSapling = RUBlocks.MAPLE_NATURAL_SET.getSapling();
+```
+
+```java Iterating sets
+// Get all wood sets
+for (WoodSet woodSet : RUBlocks.WOOD_SETS) {
+    Block log = woodSet.getLog();
+    // Process wood set...
+}
+
+// Get all natural sets
+for (NaturalSet naturalSet : RUBlocks.NATURAL_SETS) {
+    Block leaves = naturalSet.getLeaves();
+    // Process natural set...
+}
+```
+
+```java Custom registration
+// Register a custom block
+Supplier<Block> myBlock = RUBlockUtils.register(
+    "my_custom_block",
+    p -> new Block(p.strength(2.0f).sound(SoundType.STONE))
+);
+
+// Register without auto-creating item
+Supplier<Block> technicalBlock = RUBlockUtils.registerNoItem(
+    "technical_block",
+    p -> new Block(p)
+);
+```
+</CodeGroup>

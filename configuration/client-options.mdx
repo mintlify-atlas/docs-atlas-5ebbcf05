@@ -1,0 +1,223 @@
+---
+title: Client options
+description: Customize visual effects, particles, and client-side behavior
+---
+
+Client-side configuration controls visual effects, particle systems, and UI preferences that only affect your local game client. These settings do not require server synchronization and can be changed without affecting other players.
+
+## Configuration file
+
+Client options are stored in:
+
+```text
+config/regions_unexplored-client.toml
+```
+
+<Note>
+  Most client configuration changes require a game restart to take effect.
+</Note>
+
+## General client options
+
+<ParamField name="CUSTOM_ITEMS_IN_VANILLA_CREATIVE_TABS" type="boolean" default="true">
+  Controls whether Regions Unexplored items appear in vanilla creative mode tabs alongside similar vanilla items, or only in the mod's dedicated creative tab.
+  
+  When enabled, the mod's items are integrated into vanilla tabs (e.g., building blocks appear in the Building Blocks tab). When disabled, items only appear in the Regions Unexplored creative tab.
+</ParamField>
+
+## Particle effects
+
+Control particle effects added by the mod:
+
+<ParamField name="LEAVES_PARTICLES" type="boolean" default="true">
+  Enables particle effects that fall from the mod's custom leaves. These particles add ambient atmosphere to forests and wooded biomes.
+  
+  Disable this if you experience performance issues or prefer cleaner visuals.
+</ParamField>
+
+<ParamField name="PRISMARITE_SPARKLE_RATE" type="float" default="1.0">
+  Controls the frequency of sparkle particles emitted by Prismarite blocks in the Prismachasm cave biome.
+  
+  - **Range:** `0.0` to `5.0`
+  - **Default:** `1.0`
+  - **Recommended values:**
+    - `0.0` - No sparkles (best performance)
+    - `0.5` - Subtle sparkles
+    - `1.0` - Standard sparkles
+    - `2.0` - Frequent sparkles
+    - `5.0` - Maximum sparkles (may impact performance)
+</ParamField>
+
+## Block color options
+
+Customize color properties for specific blocks with dynamic coloring:
+
+### Eucalyptus tree colors
+
+Eucalyptus trees feature a unique gradient color system that transitions across biomes and coordinates. These settings control how those colors appear:
+
+<ParamField name="EUCALYPTUS_TRANSITION_SIZE" type="float" default="25.0">
+  Controls the distance over which eucalyptus colors transition from one hue to another.
+  
+  - **Range:** `0.0` to `200.0`
+  - **Default:** `25.0`
+  - **Effect:**
+    - Lower values = Rapid color changes (creates striped patterns)
+    - Higher values = Gradual color changes (smooth gradients)
+  
+  Bigger numbers create larger regions of consistent color before transitioning to the next hue.
+</ParamField>
+
+<ParamField name="EUCALYPTUS_SATURATION" type="float" default="0.5">
+  Controls the color saturation (intensity) of eucalyptus leaves and logs.
+  
+  - **Range:** `0.0` to `1.0`
+  - **Default:** `0.5`
+  - **Effect:**
+    - `0.0` = Grayscale (no color)
+    - `0.5` = Moderate saturation (default)
+    - `1.0` = Vivid, highly saturated colors
+</ParamField>
+
+<ParamField name="EUCALYPTUS_BRIGHTNESS" type="float" default="0.8">
+  Controls the brightness (lightness) of eucalyptus colors.
+  
+  - **Range:** `0.0` to `1.0`
+  - **Default:** `0.8`
+  - **Effect:**
+    - `0.0` = Black
+    - `0.5` = Medium brightness
+    - `0.8` = Bright (default)
+    - `1.0` = Maximum brightness (very light colors)
+</ParamField>
+
+## Configuration examples
+
+<Tabs>
+  <Tab title="Performance optimization">
+    ```toml config/regions_unexplored-client.toml
+    [client_options]
+    CUSTOM_ITEMS_IN_VANILLA_CREATIVE_TABS = true
+    
+    [particles]
+    # Disable particle effects for better performance
+    LEAVES_PARTICLES = false
+    PRISMARITE_SPARKLE_RATE = 0.0
+    
+    [block_color_options]
+    # Keep default color settings
+    EUCALYPTUS_TRANSITION_SIZE = 25.0
+    EUCALYPTUS_SATURATION = 0.5
+    EUCALYPTUS_BRIGHTNESS = 0.8
+    ```
+  </Tab>
+  
+  <Tab title="Enhanced visuals">
+    ```toml config/regions_unexplored-client.toml
+    [particles]
+    # Enable all particles with enhanced rates
+    LEAVES_PARTICLES = true
+    PRISMARITE_SPARKLE_RATE = 2.5
+    
+    [block_color_options]
+    # Vibrant eucalyptus with smooth transitions
+    EUCALYPTUS_TRANSITION_SIZE = 50.0
+    EUCALYPTUS_SATURATION = 0.8
+    EUCALYPTUS_BRIGHTNESS = 0.9
+    ```
+  </Tab>
+  
+  <Tab title="Subtle and natural">
+    ```toml config/regions_unexplored-client.toml
+    [particles]
+    # Reduced particle effects
+    LEAVES_PARTICLES = true
+    PRISMARITE_SPARKLE_RATE = 0.5
+    
+    [block_color_options]
+    # Desaturated colors for natural appearance
+    EUCALYPTUS_TRANSITION_SIZE = 40.0
+    EUCALYPTUS_SATURATION = 0.3
+    EUCALYPTUS_BRIGHTNESS = 0.7
+    ```
+  </Tab>
+  
+  <Tab title="Rainbow eucalyptus">
+    ```toml config/regions_unexplored-client.toml
+    [block_color_options]
+    # Maximize color variety and vibrancy
+    # Range: [0.0, 200.0]
+    # Default: 25.0
+    EUCALYPTUS_TRANSITION_SIZE = 15.0
+    
+    # Range: [0.0, 1.0]
+    # Default: 0.5
+    EUCALYPTUS_SATURATION = 1.0
+    
+    # Range: [0.0, 1.0]
+    # Default: 0.8
+    EUCALYPTUS_BRIGHTNESS = 0.95
+    ```
+  </Tab>
+</Tabs>
+
+## Visual guide
+
+<CardGroup cols={2}>
+  <Card title="Particle effects" icon="sparkles">
+    Leaf particles and prismarite sparkles add ambient atmosphere to biomes. Adjust rates based on your performance needs and visual preferences.
+  </Card>
+  
+  <Card title="Eucalyptus colors" icon="palette">
+    The color system uses HSV (Hue, Saturation, Value/Brightness) to create dynamic gradients. Experiment with different combinations to find your preferred aesthetic.
+  </Card>
+</CardGroup>
+
+## Performance impact
+
+<AccordionGroup>
+  <Accordion title="Particle effects">
+    Particle effects have moderate performance impact:
+    
+    - **LEAVES_PARTICLES:** Low impact - adds ambient particles near leaves
+    - **PRISMARITE_SPARKLE_RATE:** Impact scales with value:
+      - `0.0-1.0`: Minimal impact
+      - `1.0-3.0`: Low to moderate impact
+      - `3.0-5.0`: Moderate impact in areas with many prismarite blocks
+    
+    If experiencing low FPS in biomes with these features, try reducing or disabling these settings.
+  </Accordion>
+  
+  <Accordion title="Block colors">
+    Color customization options have negligible performance impact. These settings only change color calculations which are very lightweight.
+    
+    Feel free to experiment with any values without worrying about performance.
+  </Accordion>
+</AccordionGroup>
+
+## Tips for customization
+
+<Steps>
+  <Step title="Start with defaults">
+    Before making changes, play with the default settings to understand the baseline visual experience.
+  </Step>
+  
+  <Step title="Adjust one category at a time">
+    Change particle settings first, then color options. This makes it easier to identify which changes you prefer.
+  </Step>
+  
+  <Step title="Visit relevant biomes">
+    Test changes in the biomes they affect:
+    - Eucalyptus colors: Visit Eucalyptus Forest biome
+    - Prismarite sparkles: Explore Prismachasm caves
+    - Leaf particles: Check various forest biomes
+  </Step>
+  
+  <Step title="Consider shader compatibility">
+    If using shader packs, particle effects and colors may appear differently. Test your configuration with shaders enabled if you use them.
+  </Step>
+</Steps>
+
+<Warning>
+  Changes to client configuration require a full game restart. Use `/reload` or F3+T (resource pack reload) will not apply configuration changes.
+</Warning>

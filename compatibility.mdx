@@ -1,0 +1,368 @@
+---
+title: Compatibility
+description: Mod compatibility, Minecraft versions, and system requirements
+---
+
+Regions Unexplored is designed to work seamlessly with vanilla Minecraft and integrates with popular mods through its dependencies Biolith and Lithostitched.
+
+## Minecraft versions
+
+<Info>
+  Regions Unexplored follows a **dual-version policy**: maintaining an LTS (Long Term Support) version for stable modded ecosystems and a latest version for the newest Minecraft releases.
+</Info>
+
+### Currently supported
+
+| Minecraft Version | Mod Version | Status | Loaders |
+|-------------------|-------------|--------|----------|
+| 1.21.1 | 0.6+indev | Active Development | Fabric, NeoForge |
+
+### Loader requirements
+
+<Tabs>
+  <Tab title="Fabric">
+    **Minimum versions:**
+    - Fabric Loader: **0.18.4** or higher
+    - Fabric API: **0.116.8** or higher
+    
+    **Recommended:**
+    - Latest stable Fabric Loader
+    - Latest Fabric API for 1.21.1
+  </Tab>
+  
+  <Tab title="NeoForge">
+    **Minimum versions:**
+    - NeoForge: **21.1.218** or higher
+    
+    **Recommended:**
+    - NeoForge 21.1.218 or newer
+    
+    <Note>
+      NeoForge is the continuation of Forge for Minecraft 1.20.2+. Older Forge versions are not supported.
+    </Note>
+  </Tab>
+</Tabs>
+
+## Required dependencies
+
+<Warning>
+  These dependencies are **mandatory**. Regions Unexplored will not function without them.
+</Warning>
+
+<CardGroup cols={2}>
+  <Card title="Biolith" icon="seedling" href="https://modrinth.com/mod/biolith">
+    **Version:** 3.0.10 or higher
+    
+    Biome placement and integration library. Handles how Regions Unexplored biomes are distributed throughout the world and ensures compatibility with other biome mods.
+  </Card>
+  
+  <Card title="Lithostitched" icon="layer-group" href="https://modrinth.com/mod/lithostitched">
+    **Version:** 1.5.7 for Minecraft 1.21.1
+    
+    World generation framework that enables advanced terrain features and ensures seamless integration with vanilla worldgen.
+  </Card>
+</CardGroup>
+
+### Dependency installation
+
+<Steps>
+  <Step title="Download the correct versions">
+    Ensure you download versions matching your mod loader:
+    - **Fabric**: `biolith-fabric-3.0.10.jar`, `lithostitched-1.5.7-fabric-1.21.1.jar`
+    - **NeoForge**: `biolith-neoforge-3.0.10.jar`, `lithostitched-1.5.7-neoforge-1.21.1.jar`
+  </Step>
+  
+  <Step title="Install alongside Regions Unexplored">
+    Place all dependency `.jar` files in your `mods` folder together with Regions Unexplored.
+  </Step>
+</Steps>
+
+## Optional integrations
+
+### Mod Menu (Fabric only)
+
+<Card title="Mod Menu" icon="bars" href="https://modrinth.com/mod/modmenu">
+  **Recommended for Fabric users**
+  
+  Regions Unexplored includes Mod Menu integration, providing:
+  - In-game configuration screen access
+  - Visual mod information display
+  - Easy config file management
+  
+  Integration class: `net.regions_unexplored.compat.ModMenuIntegration`
+</Card>
+
+### World Preview
+
+<Info>
+  The Fabric build includes optional runtime support for [World Preview](https://modrinth.com/mod/world-preview), allowing you to preview biome generation before creating a world.
+</Info>
+
+## Compatible with other mods
+
+### Biome and worldgen mods
+
+Regions Unexplored uses Biolith for biome placement, which is specifically designed for multi-biome-mod compatibility.
+
+<AccordionGroup>
+  <Accordion title="Compatible biome mods" icon="check">
+    Regions Unexplored works alongside other biome mods that use compatible worldgen systems:
+    
+    - **Biomes O' Plenty** - Use together for 200+ total biomes
+    - **Terralith** - Compatible when both use Biolith
+    - **William Wythers' Overhauled Overworld** - Works with proper config
+    - **Promenade** - Full compatibility
+    - Other Biolith-based biome mods
+    
+    <Tip>
+      When using multiple biome mods, biomes will be distributed based on their configured weights and climate parameters. You may need to adjust configs for optimal distribution.
+    </Tip>
+  </Accordion>
+  
+  <Accordion title="Potential conflicts" icon="triangle-exclamation">
+    Some worldgen modification mods may cause conflicts:
+    
+    - **Terrafirmacraft** - Total conversion, incompatible
+    - **Custom terrain mods** - May override biome placement
+    - **Older worldgen mods** - Pre-1.18 worldgen systems incompatible
+    
+    <Warning>
+      Always test mod combinations in a new world before committing to a long-term save.
+    </Warning>
+  </Accordion>
+</AccordionGroup>
+
+### Performance mods
+
+<Tabs>
+  <Tab title="Fabric">
+    **Recommended performance mods:**
+    
+    <CardGroup cols={2}>
+      <Card title="Sodium" icon="bolt">
+        Rendering optimization - **Highly Recommended**
+      </Card>
+      <Card title="Lithium" icon="battery-full">
+        Server/game logic optimization
+      </Card>
+      <Card title="Starlight" icon="star">
+        Lighting engine optimization
+      </Card>
+      <Card title="FerriteCore" icon="memory">
+        Memory usage optimization
+      </Card>
+    </CardGroup>
+    
+    All tested and compatible with Regions Unexplored.
+  </Tab>
+  
+  <Tab title="NeoForge">
+    **Recommended performance mods:**
+    
+    <CardGroup cols={2}>
+      <Card title="Embeddium" icon="bolt">
+        Sodium port for NeoForge
+      </Card>
+      <Card title="Canary" icon="battery-full">
+        Lithium port for NeoForge
+      </Card>
+      <Card title="ModernFix" icon="wrench">
+        Performance and bug fixes
+      </Card>
+    </CardGroup>
+  </Tab>
+</Tabs>
+
+### Quality of life mods
+
+<AccordionGroup>
+  <Accordion title="Exploration and navigation" icon="compass">
+    - **Nature's Compass** - Locate Regions Unexplored biomes easily
+    - **Xaero's Minimap/World Map** - Track explored biomes
+    - **JourneyMap** - Full compatibility with biome display
+    - **Explorer's Compass** - Find structures in RU biomes
+  </Accordion>
+  
+  <Accordion title="Visual enhancements" icon="palette">
+    - **Complementary Shaders** - Beautiful lighting with RU biomes
+    - **BSL Shaders** - Tested and compatible
+    - **Dynamic Trees** - May require compatibility datapack
+    - **Falling Leaves** - Works with RU tree types
+  </Accordion>
+  
+  <Accordion title="Building and decoration" icon="hammer">
+    - **Macaw's Fences/Bridges/etc** - Full compatibility with RU wood types
+    - **Chipped** - Can add variants of RU blocks
+    - **FramedBlocks** - Use RU blocks as materials
+  </Accordion>
+</AccordionGroup>
+
+## Configuration
+
+Regions Unexplored provides configuration files for both client and common settings.
+
+### Config files location
+
+```bash File paths
+config/regions unexplored/regions_unexplored-client.toml
+config/regions unexplored/regions_unexplored-common.toml
+```
+
+### Configuration system
+
+<Info>
+  Regions Unexplored uses Night Config (TOML format) for configuration management. The config system is implemented in:
+  - `net.regions_unexplored.config.RuClientConfig`
+  - `net.regions_unexplored.config.RuCommonConfig`
+</Info>
+
+<Tabs>
+  <Tab title="Client config">
+    Client-side settings that affect visual and performance aspects:
+    - Particle effects
+    - Rendering options
+    - Visual preferences
+    
+    **Registered as:** `"regions unexplored/regions_unexplored-client"`
+  </Tab>
+  
+  <Tab title="Common config">
+    Shared settings that affect gameplay and worldgen:
+    - Biome placement weights
+    - Feature generation toggles
+    - Gameplay mechanics
+    
+    **Registered as:** `"regions unexplored/regions_unexplored-common"`
+    
+    <Warning>
+      Common config changes require a server restart and may only apply to newly generated chunks.
+    </Warning>
+  </Tab>
+</Tabs>
+
+### In-game configuration
+
+With Mod Menu (Fabric) or NeoForge mods screen:
+
+<Steps>
+  <Step title="Access the mods screen">
+    - **Fabric**: Click "Mods" in the main menu (requires Mod Menu)
+    - **NeoForge**: Click "Mods" in the main menu
+  </Step>
+  
+  <Step title="Select Regions Unexplored">
+    Find "Regions Unexplored" in the mod list.
+  </Step>
+  
+  <Step title="Open configuration">
+    Configuration GUI is registered via `ConfigScreenRegistry` and displays both Client and Common settings.
+  </Step>
+</Steps>
+
+## System requirements
+
+### Minimum requirements
+
+<CodeGroup>
+```yaml Minimum specs
+Minecraft: Java Edition 1.21.1
+Java: Version 21 or higher
+RAM: 4GB allocated to Minecraft
+Storage: 500MB for mod files + world data
+GPU: Integrated graphics capable of running vanilla Minecraft
+```
+</CodeGroup>
+
+### Recommended requirements
+
+<CodeGroup>
+```yaml Recommended specs
+Minecraft: Java Edition 1.21.1
+Java: Latest Java 21 LTS
+RAM: 6-8GB allocated to Minecraft
+Storage: 2GB+ for mod files and world data
+GPU: Dedicated graphics card (GTX 1050 or equivalent)
+CPU: Quad-core processor (i5/Ryzen 5 or better)
+```
+</CodeGroup>
+
+<Tip>
+  Allocating more RAM helps with chunk generation and loading, especially when using multiple biome mods or large modpacks.
+</Tip>
+
+### Performance considerations
+
+<AccordionGroup>
+  <Accordion title="Chunk generation performance" icon="layer-group">
+    Regions Unexplored generates detailed biomes with custom features, which can impact performance during initial world generation:
+    
+    - **First-time generation**: Expect slower chunk generation (30-50% longer than vanilla)
+    - **Subsequent loads**: Normal performance once chunks are generated
+    - **Solution**: Pre-generate chunks using mods like Chunky before playing
+  </Accordion>
+  
+  <Accordion title="Memory usage" icon="memory">
+    The mod adds:
+    - 71 biome definitions
+    - Hundreds of placed features and configured features
+    - Custom block and item registries
+    - World generation data
+    
+    **Typical memory footprint:** 200-400MB additional RAM usage
+  </Accordion>
+  
+  <Accordion title="Multiplayer considerations" icon="users">
+    For servers:
+    - **Pre-generate spawn area** to reduce initial lag
+    - **Allocate 6-8GB RAM minimum** for dedicated servers
+    - **Use performance mods** on server-side (Lithium/Canary)
+    - **Monitor tick time** during chunk generation
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting compatibility issues
+
+<Steps>
+  <Step title="Identify the conflict">
+    Check crash logs in the `crash-reports` folder or latest.log in the `logs` folder for error messages mentioning mod IDs.
+  </Step>
+  
+  <Step title="Isolate the problem">
+    Test with only:
+    - Regions Unexplored
+    - Biolith
+    - Lithostitched
+    - Fabric API (if using Fabric)
+    
+    If the issue disappears, add other mods back one at a time.
+  </Step>
+  
+  <Step title="Check for updates">
+    Ensure all mods are the latest versions for Minecraft 1.21.1.
+  </Step>
+  
+  <Step title="Report the issue">
+    If you've confirmed an incompatibility, report it on the [GitHub Issues page](https://github.com/UHQ-GAMES-MODS/RegionsUnexplored/issues) with:
+    - Full mod list
+    - Crash report or log file
+    - Steps to reproduce
+    - Minecraft and loader versions
+  </Step>
+</Steps>
+
+## Additional resources
+
+<CardGroup cols={2}>
+  <Card title="Installation guide" icon="download" href="/installation">
+    Detailed installation instructions for both loaders
+  </Card>
+  <Card title="GitHub issues" icon="bug" href="https://github.com/UHQ-GAMES-MODS/RegionsUnexplored/issues">
+    Report bugs and compatibility problems
+  </Card>
+  <Card title="Modrinth page" icon="box" href="https://modrinth.com/mod/regions-unexplored">
+    Download the latest version
+  </Card>
+  <Card title="Source code" icon="code" href="https://github.com/UHQ-GAMES-MODS/RegionsUnexplored">
+    View the source code on GitHub
+  </Card>
+</CardGroup>

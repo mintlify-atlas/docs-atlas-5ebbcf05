@@ -1,0 +1,370 @@
+---
+title: World generation API
+description: Features, foliage placers, and tree decorators for world generation
+---
+
+## Overview
+
+Regions Unexplored provides custom world generation components including feature types, foliage placers, and tree decorators. These systems extend Minecraft's terrain generation with mod-specific structures and vegetation.
+
+## Foliage placers
+
+Foliage placers determine the shape and placement of tree leaves. RU adds custom foliage placer types registered through `RUFoliagePlacerTypes`.
+
+### Registered foliage placers
+
+```java RUFoliagePlacerTypes.java:13-14
+Supplier<FoliagePlacerType<SakuraFoliagePlacer>> SAKURA = register("sakura", SakuraFoliagePlacer.TYPE);
+Supplier<FoliagePlacerType<WillowFoliagePlacer>> WILLOW = register("willow", WillowFoliagePlacer.TYPE);
+```
+
+### Sakura foliage placer
+
+Creates asymmetric cherry blossom-style foliage with decorative flowers:
+
+```java SakuraFoliagePlacer codec
+public static final MapCodec<SakuraFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((placer) ->
+    foliagePlacerParts(placer).and(placer.group(
+        IntProvider.codec(4, 16).fieldOf("height").forGetter(
+            (height) -> height.height),
+        Codec.floatRange(0.0F, 1.0F).fieldOf("flower_decoration_chance").forGetter(
+            (flowerChance) -> flowerChance.flowerDecorationChance)
+    ))
+    .apply(placer, SakuraFoliagePlacer::new)
+);
+```
+
+<ParamField path="SakuraFoliagePlacer" type="class">
+  Custom foliage placer for sakura trees
+  
+  <Expandable title="constructor">
+    ```java Constructor signature
+    public SakuraFoliagePlacer(
+        IntProvider radius,
+        IntProvider offset,
+        IntProvider height,
+        float flowerDecorationChance
+    )
+    ```
+  </Expandable>
+  
+  <Expandable title="fields">
+    <ResponseField name="height" type="IntProvider">
+      Vertical height range for foliage (4-16 blocks)
+    </ResponseField>
+    
+    <ResponseField name="flowerDecorationChance" type="float">
+      Probability of flower decorations (0.0-1.0)
+    </ResponseField>
+  </Expandable>
+</ParamField>
+
+### Foliage placement logic
+
+The Sakura placer creates asymmetric leaf patterns:
+
+```java Placement methods
+protected void createFoliage(
+    LevelSimulatedReader level,
+    FoliageSetter setter,
+    RandomSource random,
+    TreeConfiguration treeConfig,
+    int p_272975_,
+    FoliageAttachment foliage,
+    int p_273647_,
+    int p_273700_,
+    int height
+) {
+    BlockPos blockpos = foliage.pos().above(height);
+    if (random.nextInt(2) == 0) {
+        placeLeavesBlobLeft(level, setter, random, treeConfig, blockpos);
+    } else {
+        placeLeavesBlobRight(level, setter, random, treeConfig, blockpos);
+    }
+}
+```
+
+### Willow foliage placer
+
+Creates drooping willow-style foliage:
+
+<Note>
+The willow foliage placer creates hanging leaf patterns characteristic of weeping willow trees.
+</Note>
+
+## Tree decorators
+
+Tree decorators add additional blocks or features to generated trees. RU provides several custom decorator types.
+
+### Registered decorators
+
+```java RUTreeDecoratorTypes.java:12-15
+Supplier<TreeDecoratorType<BlackwoodBioshroom>> BLACKWOOD_BIOSHROOMS = 
+    register("blackwood_bioshrooms", BlackwoodBioshroom.TYPE);
+Supplier<TreeDecoratorType<BranchDecorator>> BRANCH = 
+    register("branch", BranchDecorator.TYPE);
+Supplier<TreeDecoratorType<PlaceOnGroundDecorator>> PLACE_ON_GROUND = 
+    register("place_on_ground", PlaceOnGroundDecorator.TYPE);
+Supplier<TreeDecoratorType<WillowTrunkDecorator>> WILLOW = 
+    register("willow", WillowTrunkDecorator.TYPE);
+```
+
+### Branch decorator
+
+Adds decorative branch blocks to tree trunks:
+
+```java BranchDecorator.java:21-25
+public static final MapCodec<BranchDecorator> CODEC = RecordCodecBuilder.<BranchDecorator>mapCodec(i -> i.group(
+    Codec.floatRange(0, 1).fieldOf("probability").forGetter(d -> d.probability),
+    BuiltInRegistries.BLOCK.byNameCodec().fieldOf("block").forGetter(d -> d.block),
+    Codec.intRange(0, 16).fieldOf("required_empty_blocks").forGetter(d -> d.requiredEmptyBlocks)
+).apply(i, BranchDecorator::new)).validate(BranchDecorator::validate);
+```
+
+<ParamField path="BranchDecorator" type="class">
+  Decorator that places branch blocks on tree logs
+  
+  <Expandable title="constructor">
+    ```java Constructor
+    public BranchDecorator(
+        float probability,
+        Block block,
+        int requiredEmptyBlocks
+    )
+    ```
+  </Expandable>
+  
+  <Expandable title="parameters">
+    <ParamField path="probability" type="float" required>
+      Chance to place a branch at each valid position (0.0-1.0)
+    </ParamField>
+    
+    <ParamField path="block" type="Block" required>
+      The branch block to place (must be instance of `BranchBlock`)
+    </ParamField>
+    
+    <ParamField path="requiredEmptyBlocks" type="int" required>
+      Number of empty blocks required below branch position (0-16)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Branch placement logic
+
+```java BranchDecorator.java:52-60
+@Override
+public void place(Context context) {
+    RandomSource random = context.random();
+    for (BlockPos logsPos : RUUtils.shuffledCopy(context.logs(), random)) {
+        Direction direction = RUUtils.getRandom(HORIZONTAL_DIRECTIONS, random);
+        BlockPos placementPos = logsPos.relative(direction);
+        if (!(random.nextFloat() <= this.probability) || !hasRequiredEmptyBlocks(context, placementPos)) continue;
+        context.setBlock(placementPos, this.block.defaultBlockState().setValue(BranchBlock.FACING, direction));
+    }
+}
+```
+
+<Steps>
+  <Step title="Iterate logs">
+    Loop through all log positions in random order
+  </Step>
+  <Step title="Choose direction">
+    Randomly select a horizontal direction (North, East, South, or West)
+  </Step>
+  <Step title="Check probability">
+    Roll against the configured probability
+  </Step>
+  <Step title="Validate space">
+    Ensure required empty blocks exist below placement position
+  </Step>
+  <Step title="Place branch">
+    Set the branch block with appropriate facing direction
+  </Step>
+</Steps>
+
+### Validation
+
+The branch decorator validates that the block is a proper `BranchBlock`:
+
+```java Decorator validation
+private static DataResult<BranchDecorator> validate(BranchDecorator decorator) {
+    if (decorator.block instanceof BranchBlock) {
+        return DataResult.success(decorator);
+    }
+    return DataResult.error(() -> 
+        "Block must be instance of BranchBlock, got " + decorator.block.getClass().getName()
+    );
+}
+```
+
+## Feature types
+
+The `RUFeatureTypes` interface registers custom world features including trees, rocks, and special structures.
+
+### Tree features
+
+```java Tree feature registration examples
+Supplier<Feature<RuTreeConfiguration>> ASPEN_TREE = 
+    register("aspen_tree", new AspenTreeFeature(RuTreeConfiguration.CODEC));
+Supplier<Feature<RuTreeConfiguration>> CYPRESS_TREE = 
+    register("cypress_tree", new CypressTreeFeature(RuTreeConfiguration.CODEC));
+Supplier<Feature<RuTreeConfiguration>> MAPLE_TREE = 
+    register("maple_tree", new MapleTreeFeature(RuTreeConfiguration.CODEC));
+Supplier<Feature<RuTreeConfiguration>> REDWOOD_TREE = 
+    register("redwood_tree", new RedwoodTreeFeature(RuTreeConfiguration.CODEC));
+```
+
+### Mega tree features
+
+Large tree variants for impressive structures:
+
+```java Mega tree features
+Supplier<Feature<RuTreeConfiguration>> MEGA_BAOBAB_TREE = 
+    register("mega_baobab_tree", new MegaBaobabTreeFeature(RuTreeConfiguration.CODEC));
+Supplier<Feature<RuTreeConfiguration>> ULTRA_BAOBAB_TREE = 
+    register("ultra_baobab_tree", new UltraBaobabTreeFeature(RuTreeConfiguration.CODEC));
+Supplier<Feature<RuTreeConfiguration>> SUPER_REDWOOD_TREE = 
+    register("super_redwood_tree", new SuperRedwoodTreeFeature(RuTreeConfiguration.CODEC));
+Supplier<Feature<RuTreeConfiguration>> ULTRA_REDWOOD_TREE = 
+    register("ultra_redwood_tree", new UltraRedwoodTreeFeature(RuTreeConfiguration.CODEC));
+```
+
+### Bioshroom features
+
+Giant mushroom structures for cave biomes:
+
+```java Bioshroom features
+Supplier<Feature<GiantBioshroomConfiguration>> GIANT_BLUE_BIOSHROOM = 
+    register("giant_blue_bioshroom", new GiantBlueBioshroomFeature(GiantBioshroomConfiguration.CODEC));
+Supplier<Feature<GiantBioshroomConfiguration>> GIANT_GREEN_BIOSHROOM = 
+    register("giant_green_bioshroom", new GiantGreenBioshroomFeature(GiantBioshroomConfiguration.CODEC));
+Supplier<Feature<GiantBioshroomConfiguration>> GIANT_PINK_BIOSHROOM = 
+    register("giant_pink_bioshroom", new GiantPinkBioshroomFeature(GiantBioshroomConfiguration.CODEC));
+Supplier<Feature<GiantBioshroomConfiguration>> GIANT_YELLOW_BIOSHROOM = 
+    register("giant_yellow_bioshroom", new GiantYellowBioshroomFeature(GiantBioshroomConfiguration.CODEC));
+```
+
+### Decorative features
+
+```java Vegetation and decoration
+Supplier<Feature<ShrubConfiguration>> SHRUB = 
+    register("shrub", new ShrubFeature(ShrubConfiguration.CODEC));
+Supplier<Feature<NoneFeatureConfiguration>> GIANT_LILY = 
+    register("giant_lily", new GiantLilyPadFeature(NoneFeatureConfiguration.CODEC));
+Supplier<Feature<NoneFeatureConfiguration>> ICICLE_UP = 
+    register("icicle_up", new FloorIcicleFeature(NoneFeatureConfiguration.CODEC));
+Supplier<Feature<MultifaceGrowthConfiguration>> AIR_MULTIFACE_GROWTH = 
+    register("air_multiface_growth", new AirMultifaceGrowthFeature(MultifaceGrowthConfiguration.CODEC));
+```
+
+### Geological features
+
+```java Rock and terrain features
+Supplier<Feature<NoneFeatureConfiguration>> MEADOW_ROCK = 
+    register("meadow_rock", new MeadowRockFeature(NoneFeatureConfiguration.CODEC));
+Supplier<Feature<NoneFeatureConfiguration>> ROCK = 
+    register("rock", new RockFeature(NoneFeatureConfiguration.CODEC));
+Supplier<Feature<NoneFeatureConfiguration>> ROCK_PILLAR = 
+    register("rock_pillar", new RockPillarFeature(NoneFeatureConfiguration.CODEC));
+Supplier<Feature<SeaRockConfiguration>> OCEAN_ROCK = 
+    register("ocean_rock", new SeaRockFeature(SeaRockConfiguration.CODEC));
+Supplier<Feature<ColumnFeatureConfiguration>> BASALT_BLOB = 
+    register("basalt_blob", new BasaltBlobFeature(ColumnFeatureConfiguration.CODEC));
+```
+
+### Special features
+
+```java Unique world features
+Supplier<Feature<PointedRedstoneConfiguration>> POINTED_REDSTONE = 
+    register("pointed_redstone", new PointedRedstoneFeature(PointedRedstoneConfiguration.CODEC));
+Supplier<Feature<NoneFeatureConfiguration>> HANGING_PRISMARITE = 
+    register("hanging_prismarite", new HangingPrismariteFeature(NoneFeatureConfiguration.CODEC));
+Supplier<Feature<NoneFeatureConfiguration>> ASH_VENT = 
+    register("scorch_vent", new AshVentFeature(NoneFeatureConfiguration.CODEC));
+Supplier<Feature<VegetationPatchConfiguration>> OVERWORLD_LAVA_DELTA = 
+    register("overworld_lava_delta", new LavaDeltaFeature(VegetationPatchConfiguration.CODEC));
+```
+
+## Usage in datapacks
+
+### Using custom foliage placers
+
+```json Sakura foliage placer in JSON
+{
+  "type": "regions_unexplored:sakura",
+  "radius": 2,
+  "offset": 0,
+  "height": {
+    "type": "minecraft:uniform",
+    "min_inclusive": 4,
+    "max_inclusive": 8
+  },
+  "flower_decoration_chance": 0.3
+}
+```
+
+### Using tree decorators
+
+```json Branch decorator in JSON
+{
+  "type": "regions_unexplored:branch",
+  "probability": 0.4,
+  "block": "regions_unexplored:maple_branch",
+  "required_empty_blocks": 3
+}
+```
+
+### Complete tree configuration
+
+```json Maple tree with branch decorator
+{
+  "type": "regions_unexplored:maple_tree",
+  "trunk_placer": {
+    "type": "minecraft:straight_trunk_placer",
+    "base_height": 5,
+    "height_rand_a": 2,
+    "height_rand_b": 0
+  },
+  "foliage_placer": {
+    "type": "minecraft:blob_foliage_placer",
+    "radius": 2,
+    "offset": 0,
+    "height": 3
+  },
+  "decorators": [
+    {
+      "type": "regions_unexplored:branch",
+      "probability": 0.3,
+      "block": "regions_unexplored:maple_branch",
+      "required_empty_blocks": 2
+    }
+  ],
+  "trunk_provider": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "regions_unexplored:maple_log"
+    }
+  },
+  "foliage_provider": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "regions_unexplored:maple_leaves"
+    }
+  }
+}
+```
+
+## Registration pattern
+
+All world generation components follow this registration pattern:
+
+```java Generic registration
+private static <T extends Type> Supplier<T> register(String name, T instance) {
+    Registrar.register(BuiltInRegistries.REGISTRY, name, () -> instance);
+    return () -> instance;
+}
+```
+
+<Tip>
+Features, foliage placers, and decorators can be referenced in configured features and placed features for use in biomes.
+</Tip>

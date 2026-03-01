@@ -1,0 +1,167 @@
+---
+title: Items and food
+description: Food items and consumables added by Regions Unexplored
+---
+
+## Food items
+
+<CardGroup cols={2}>
+  <Card title="Salmonberry" icon="berry">
+    **Hunger:** 3 (1.5 shanks)
+    **Saturation:** 0.3
+    **Source:** Salmonberry bush
+    
+    A pink berry harvested from salmonberry bushes.
+  </Card>
+
+  <Card title="Duskmelon slice" icon="apple-core">
+    **Hunger:** 5 (2.5 shanks)
+    **Saturation:** 1.1
+    **Effect:** Blindness (12 seconds, 100% chance)
+    **Source:** Duskmelon plant
+    
+    Sweet melon with a side effect of temporary blindness.
+  </Card>
+
+  <Card title="Hanging earlight fruit" icon="lightbulb">
+    **Hunger:** 6 (3 shanks)
+    **Saturation:** 0.4
+    **Effect:** Glowing (10 seconds, 10% chance)
+    **Source:** Hanging earlight (Nether)
+    
+    Luminescent fruit from the nether that may make you glow.
+  </Card>
+
+  <Card title="Meadow sage" icon="leaf">
+    **Hunger:** 2 (1 shank)
+    **Saturation:** 0.15
+    **Effect:** Instant Health (1 second, 50% chance)
+    **Source:** Meadow sage plant
+    
+    Medicinal herb with healing properties.
+  </Card>
+</CardGroup>
+
+## Food mechanics
+
+<AccordionGroup>
+  <Accordion title="Salmonberry bushes" icon="seedling">
+    **Growth:** Similar to sweet berry bushes
+    **Stages:** Multiple growth stages
+    **Harvest:** Right-click mature bush to collect berries
+    **Properties:**
+    - Flammable
+    - Random tick growth
+    - No collision when growing
+    - Sweet berry bush sounds
+  </Accordion>
+
+  <Accordion title="Duskmelon" icon="melon">
+    **Growth:** Vine-based like regular melons
+    **Special notes:**
+    - Causes blindness effect when eaten
+    - Higher saturation than regular melon
+    - Found in specific biomes
+  </Accordion>
+
+  <Accordion title="Hanging earlight" icon="vine">
+    **Location:** Nether (Cobalt biome)
+    **Growth:** Hangs downward like weeping vines
+    **Properties:**
+    - Emits light (level 14)
+    - Edible fruit
+    - Low chance of glowing effect
+    - Random tick growth
+  </Accordion>
+
+  <Accordion title="Meadow sage" icon="flower">
+    **Type:** Tall plant (2 blocks)
+    **Special notes:**
+    - Only tall plant that's edible
+    - 50% chance of healing
+    - Low hunger restoration
+    - Found in meadow biomes
+  </Accordion>
+</AccordionGroup>
+
+## Nutrition comparison
+
+<Tabs>
+  <Tab title="By hunger value">
+    Ranked from most to least filling:
+
+    1. **Hanging earlight fruit** - 6 hunger (3 shanks)
+    2. **Duskmelon slice** - 5 hunger (2.5 shanks)
+    3. **Salmonberry** - 3 hunger (1.5 shanks)
+    4. **Meadow sage** - 2 hunger (1 shank)
+  </Tab>
+
+  <Tab title="By saturation">
+    Ranked by saturation effectiveness:
+
+    1. **Duskmelon slice** - 1.1 saturation
+    2. **Hanging earlight fruit** - 0.4 saturation
+    3. **Salmonberry** - 0.3 saturation
+    4. **Meadow sage** - 0.15 saturation
+  </Tab>
+
+  <Tab title="By effect">
+    Foods with special effects:
+
+    <CardGroup cols={2}>
+      <Card title="Positive effects" icon="heart">
+        - **Meadow sage**: Instant Health (50%)
+        - **Hanging earlight fruit**: Glowing (10%)
+      </Card>
+      <Card title="Negative effects" icon="skull">
+        - **Duskmelon slice**: Blindness (100%)
+      </Card>
+    </CardGroup>
+  </Tab>
+</Tabs>
+
+## Item aliases
+
+<Note>
+Some items have legacy names that redirect to current names:
+- `cactus_flower` → `saguaro_cactus_flower`
+- `maple_leaf_pile` → `maple_leaf_litter`
+- `red_maple_leaf_pile` → `red_maple_leaf_litter`
+- `orange_maple_leaf_pile` → `orange_maple_leaf_litter`
+- `silver_birch_leaf_pile` → `silver_birch_leaf_litter`
+- `enchanted_birch_leaf_pile` → `enchanted_birch_leaf_litter`
+</Note>
+
+## Obtaining food
+
+<Steps>
+  <Step title="Find the plant source">
+    Locate the plant in its natural biome:
+    - Salmonberries: Various biomes
+    - Duskmelon: Specific overworld biomes
+    - Hanging earlight: Cobalt nether biome
+    - Meadow sage: Meadow biomes
+  </Step>
+
+  <Step title="Wait for maturity">
+    Most food plants need time to grow:
+    - Berry bushes have visible growth stages
+    - Melons need to generate fruit blocks
+    - Vines grow downward over time
+  </Step>
+
+  <Step title="Harvest carefully">
+    Collection methods:
+    - **Berries**: Right-click mature bushes
+    - **Melons**: Break the fruit block
+    - **Earlight fruit**: Break the hanging fruit
+    - **Sage**: Break the plant
+  </Step>
+
+  <Step title="Consider replanting">
+    Ensure sustainable food sources:
+    - Collect extra berries to plant new bushes
+    - Leave some plants to spread naturally
+    - Use bonemeal to speed up growth
+  </Step>
+</Steps>

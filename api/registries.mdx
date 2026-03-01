@@ -1,0 +1,198 @@
+---
+title: Registries and registration system
+description: Overview of the Regions Unexplored registry system and initialization process
+---
+
+## Overview
+
+Regions Unexplored uses a centralized registration system through the `RegionsUnexplored` main class and several registry interfaces. All game content (blocks, items, biomes, features, etc.) is registered during mod initialization.
+
+## Main initialization
+
+The mod's entry point is `RegionsUnexplored.java`, which coordinates all registry initialization:
+
+```java RegionsUnexplored.java:26-40
+public static void init() {
+    registerConfig("regions unexplored/regions_unexplored-client", "Client", RuClientConfig.class);
+    registerConfig("regions unexplored/regions_unexplored-common", "Common", RuCommonConfig.class);
+
+    RUBiomes.init();
+    RUBlocks.init();
+    RUCreativeModeTabs.init();
+    RUEntityTypes.init();
+    RUFeatureTypes.init();
+    RUFoliagePlacerTypes.init();
+    RUItems.init();
+    RUParticleTypes.init();
+    RUSoundEvents.init();
+    RUTreeDecoratorTypes.init();
+}
+```
+
+<Note>
+The `init()` method must be called before Minecraft finishes registry freezing. Additional setup happens in `afterRegistriesFreeze()` for compatibility and late initialization.
+</Note>
+
+## Post-registration setup
+
+After registries are frozen, the mod performs additional setup:
+
+```java RegionsUnexplored.java:42-48
+public static void afterRegistriesFreeze(){
+    BlockToolCompat.setup();
+    FlammableBlocks.setup();
+    RuBiolith.init();
+}
+```
+
+## Core registries
+
+### Registry interfaces
+
+Regions Unexplored organizes content into registry interfaces:
+
+<CardGroup cols={2}>
+  <Card title="RUBlocks" icon="cube" href="/api/blocks-and-items#blocks">
+    Block registration and wood/natural sets
+  </Card>
+  <Card title="RUItems" icon="box" href="/api/blocks-and-items#items">
+    Item registration and food properties
+  </Card>
+  <Card title="RUBiomes" icon="mountain" href="/api/biomes">
+    Biome resource keys and villager types
+  </Card>
+  <Card title="RUFeatureTypes" icon="tree">
+    World generation features
+  </Card>
+</CardGroup>
+
+<CardGroup cols={2}>
+  <Card title="RUFoliagePlacerTypes" icon="leaf">
+    Custom foliage placer types
+  </Card>
+  <Card title="RUTreeDecoratorTypes" icon="wand-magic-sparkles">
+    Tree decorator types
+  </Card>
+  <Card title="RUParticleTypes" icon="sparkles">
+    Custom particle types
+  </Card>
+  <Card title="RUSoundEvents" icon="volume-high">
+    Sound event registration
+  </Card>
+</CardGroup>
+
+## Utility methods
+
+### Resource location helpers
+
+The main class provides helper methods for creating resource identifiers:
+
+<CodeGroup>
+```java Creating identifiers
+// Create a ResourceLocation with the mod namespace
+Identifier id = RegionsUnexplored.id("alpha_log");
+// Result: regions_unexplored:alpha_log
+
+// Get string representation
+String stringId = RegionsUnexplored.stringId("alpha_log");
+// Result: "regions_unexplored:alpha_log"
+```
+
+```java Creating resource keys
+// Create a ResourceKey for registries
+ResourceKey<Biome> biomeKey = RegionsUnexplored.key(
+    Registries.BIOME,
+    "alpha_grove"
+);
+```
+</CodeGroup>
+
+### Method signatures
+
+<ParamField path="id" type="static Identifier">
+  Creates a namespaced identifier with the mod ID
+  
+  <Expandable title="parameters">
+    <ParamField path="path" type="String" required>
+      The path component of the identifier
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField path="stringId" type="static String">
+  Creates a string representation of a namespaced identifier
+  
+  <Expandable title="parameters">
+    <ParamField path="path" type="String" required>
+      The path component of the identifier
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField path="key" type="static ResourceKey<T>">
+  Creates a ResourceKey for a registry entry
+  
+  <Expandable title="parameters">
+    <ParamField path="key" type="ResourceKey<? extends Registry<T>>" required>
+      The registry to create a key for
+    </ParamField>
+    <ParamField path="name" type="String" required>
+      The name of the registry entry
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Constants
+
+<ResponseField name="MOD_ID" type="String">
+  The mod identifier: `"regions_unexplored"`
+</ResponseField>
+
+<ResponseField name="LOGGER" type="Logger">
+  SLF4J logger instance for the mod
+</ResponseField>
+
+## Registration pattern
+
+All registry interfaces follow a similar pattern:
+
+```java Example registration pattern
+public interface RUBlocks {
+    // Supplier provides lazy initialization
+    Supplier<Block> PRISMOSS = register(
+        "prismoss",
+        p -> new PrismossBlock(p.mapColor(MapColor.COLOR_LIGHT_GREEN)
+            .sound(SoundType.STONE)
+            .randomTicks()
+            .strength(1.5f, 6f)
+            .requiresCorrectToolForDrops())
+    );
+    
+    static void init() {
+        // Empty - registration happens via static initialization
+    }
+}
+```
+
+<Tip>
+The `init()` method triggers static initialization of the interface, which causes all `Supplier` fields to be evaluated and registered.
+</Tip>
+
+## Platform abstraction
+
+The mod uses a platform-agnostic `Registrar` class for cross-loader compatibility:
+
+```java Platform registration
+// From RUFoliagePlacerTypes.java
+static <T extends FoliagePlacer> Supplier<FoliagePlacerType<T>> register(
+    String name,
+    FoliagePlacerType<T> type
+) {
+    Registrar.register(BuiltInRegistries.FOLIAGE_PLACER_TYPE, name, () -> type);
+    return () -> type;
+}
+```
+
+<Note>
+The `Registrar` class handles differences between Forge, Fabric, and other mod loaders, ensuring the mod works across platforms.
+</Note>

@@ -1,0 +1,412 @@
+---
+title: Biome toggles
+description: Enable or disable specific biomes in your world generation
+---
+
+Regions Unexplored allows you to selectively enable or disable any biome through the common configuration file. This is useful for customizing your world generation experience or resolving conflicts with other mods.
+
+## Configuration file
+
+Biome toggles are stored in:
+
+```text
+config/regions_unexplored-common.toml
+```
+
+<Note>
+  Biome toggle changes require world regeneration or exploration of new chunks to take effect. Existing chunks will retain their original biomes.
+</Note>
+
+## Overworld biomes
+
+The mod adds 62 unique overworld biomes. Each can be toggled independently:
+
+<AccordionGroup>
+  <Accordion title="Forest and woodland biomes">
+    <ParamField name="TOGGLE_ALPHA_GROVE" type="boolean" default="true">
+      Ancient grove biome with unique vegetation
+    </ParamField>
+    
+    <ParamField name="TOGGLE_ASHEN_WOODLAND" type="boolean" default="true">
+      Dark woodland with ashen trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_AUTUMNAL_MAPLE_FOREST" type="boolean" default="true">
+      Maple forest with autumn colors
+    </ParamField>
+    
+    <ParamField name="TOGGLE_BAMBOO_FOREST" type="boolean" default="true">
+      Dense bamboo forest biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_BLACKWOOD_TAIGA" type="boolean" default="true">
+      Taiga with blackwood trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_BOREAL_TAIGA" type="boolean" default="true">
+      Northern boreal taiga biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_COLD_BOREAL_TAIGA" type="boolean" default="true">
+      Colder variant of boreal taiga
+    </ParamField>
+    
+    <ParamField name="TOGGLE_COLD_DECIDUOUS_FOREST" type="boolean" default="true">
+      Deciduous forest in cold climate
+    </ParamField>
+    
+    <ParamField name="TOGGLE_DECIDUOUS_FOREST" type="boolean" default="true">
+      Standard deciduous forest
+    </ParamField>
+    
+    <ParamField name="TOGGLE_EUCALYPTUS_FOREST" type="boolean" default="true">
+      Forest with eucalyptus trees featuring color gradients
+    </ParamField>
+    
+    <ParamField name="TOGGLE_FROZEN_PINE_TAIGA" type="boolean" default="true">
+      Frozen taiga with pine trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_GOLDEN_BOREAL_TAIGA" type="boolean" default="true">
+      Boreal taiga with golden foliage
+    </ParamField>
+    
+    <ParamField name="TOGGLE_MAGNOLIA_WOODLAND" type="boolean" default="true">
+      Woodland filled with magnolia trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_MAPLE_FOREST" type="boolean" default="true">
+      Forest dominated by maple trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_PINE_TAIGA" type="boolean" default="true">
+      Taiga with pine trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_RAINFOREST" type="boolean" default="true">
+      Dense tropical rainforest
+    </ParamField>
+    
+    <ParamField name="TOGGLE_REDWOODS" type="boolean" default="true">
+      Towering redwood forest
+    </ParamField>
+    
+    <ParamField name="TOGGLE_SILVER_BIRCH_FOREST" type="boolean" default="true">
+      Forest with silver birch trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_SPARSE_RAINFOREST" type="boolean" default="true">
+      Less dense variant of rainforest
+    </ParamField>
+    
+    <ParamField name="TOGGLE_SPARSE_REDWOODS" type="boolean" default="true">
+      Sparse redwood forest
+    </ParamField>
+    
+    <ParamField name="TOGGLE_WILLOW_FOREST" type="boolean" default="true">
+      Forest with weeping willow trees
+    </ParamField>
+  </Accordion>
+  
+  <Accordion title="Plains and grassland biomes">
+    <ParamField name="TOGGLE_BARLEY_FIELDS" type="boolean" default="true">
+      Fields filled with barley crops
+    </ParamField>
+    
+    <ParamField name="TOGGLE_CLOVER_PLAINS" type="boolean" default="true">
+      Plains covered in clover
+    </ParamField>
+    
+    <ParamField name="TOGGLE_FLOWER_FIELDS" type="boolean" default="true">
+      Vibrant fields full of flowers
+    </ParamField>
+    
+    <ParamField name="TOGGLE_GRASSLAND" type="boolean" default="true">
+      Rolling grassland biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_HIGHLAND_FIELDS" type="boolean" default="true">
+      Elevated fields in highlands
+    </ParamField>
+    
+    <ParamField name="TOGGLE_MEADOW" type="boolean" default="true">
+      Peaceful meadow biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_POPPY_FIELDS" type="boolean" default="true">
+      Fields dominated by poppies
+    </ParamField>
+    
+    <ParamField name="TOGGLE_PRAIRIE" type="boolean" default="true">
+      Wide open prairie
+    </ParamField>
+    
+    <ParamField name="TOGGLE_PUMPKIN_FIELDS" type="boolean" default="true">
+      Fields with naturally generating pumpkins
+    </ParamField>
+  </Accordion>
+  
+  <Accordion title="Desert and arid biomes">
+    <ParamField name="TOGGLE_DRY_BUSHLAND" type="boolean" default="true">
+      Arid bushland biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_ICY_DESERT" type="boolean" default="true">
+      Frozen desert biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_JOSHUA_DESERT" type="boolean" default="true">
+      Desert with joshua trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_OUTBACK" type="boolean" default="true">
+      Australian-style outback biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_SAGUARO_DESERT" type="boolean" default="true">
+      Desert featuring saguaro cacti
+    </ParamField>
+    
+    <ParamField name="TOGGLE_SHRUBLAND" type="boolean" default="true">
+      Dry shrubland biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_STEPPE" type="boolean" default="true">
+      Vast steppe biome
+    </ParamField>
+  </Accordion>
+  
+  <Accordion title="Wetland and water biomes">
+    <ParamField name="TOGGLE_BAYOU" type="boolean" default="true">
+      Swampy bayou biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_FEN" type="boolean" default="true">
+      Marshy fen biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_FUNGAL_FEN" type="boolean" default="true">
+      Fen with large mushrooms
+    </ParamField>
+    
+    <ParamField name="TOGGLE_HYACINTH_DEEPS" type="boolean" default="true">
+      Deep water biome with hyacinths
+    </ParamField>
+    
+    <ParamField name="TOGGLE_MARSH" type="boolean" default="true">
+      Wetland marsh biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_OLD_GROWTH_BAYOU" type="boolean" default="true">
+      Ancient bayou with massive trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_COLD_RIVER" type="boolean" default="true">
+      River in cold biomes
+    </ParamField>
+    
+    <ParamField name="TOGGLE_MUDDY_RIVER" type="boolean" default="true">
+      River with muddy water
+    </ParamField>
+    
+    <ParamField name="TOGGLE_TROPICAL_RIVER" type="boolean" default="true">
+      River in tropical regions
+    </ParamField>
+    
+    <ParamField name="TOGGLE_ROCKY_REEF" type="boolean" default="true">
+      Ocean reef with rocky formations
+    </ParamField>
+  </Accordion>
+  
+  <Accordion title="Mountain and highland biomes">
+    <ParamField name="TOGGLE_ARID_MOUNTAINS" type="boolean" default="true">
+      Dry mountain biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_CHALK_CLIFFS" type="boolean" default="true">
+      White chalk cliff formations
+    </ParamField>
+    
+    <ParamField name="TOGGLE_ICY_HEIGHTS" type="boolean" default="true">
+      Frozen mountain peaks
+    </ParamField>
+    
+    <ParamField name="TOGGLE_MOUNTAINS" type="boolean" default="true">
+      Standard mountain biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_PINE_SLOPES" type="boolean" default="true">
+      Mountain slopes with pine trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_SPIRES" type="boolean" default="true">
+      Dramatic rock spire formations
+    </ParamField>
+    
+    <ParamField name="TOGGLE_TOWERING_CLIFFS" type="boolean" default="true">
+      Massive cliff formations
+    </ParamField>
+  </Accordion>
+  
+  <Accordion title="Savanna and tropical biomes">
+    <ParamField name="TOGGLE_BAOBAB_SAVANNA" type="boolean" default="true">
+      Savanna with baobab trees
+    </ParamField>
+    
+    <ParamField name="TOGGLE_MAUVE_HILLS" type="boolean" default="true">
+      Hills with mauve-colored vegetation
+    </ParamField>
+    
+    <ParamField name="TOGGLE_ORCHARD" type="boolean" default="true">
+      Natural orchard biome
+    </ParamField>
+    
+    <ParamField name="TOGGLE_TROPICS" type="boolean" default="true">
+      Tropical island biome
+    </ParamField>
+  </Accordion>
+  
+  <Accordion title="Other biomes">
+    <ParamField name="TOGGLE_FROZEN_TUNDRA" type="boolean" default="true">
+      Frozen tundra wasteland
+    </ParamField>
+    
+    <ParamField name="TOGGLE_GRASSY_BEACH" type="boolean" default="true">
+      Beach with grass coverage
+    </ParamField>
+    
+    <ParamField name="TOGGLE_GRAVEL_BEACH" type="boolean" default="true">
+      Beach made of gravel
+    </ParamField>
+    
+    <ParamField name="TOGGLE_TEMPERATE_GROVE" type="boolean" default="true">
+      Temperate grove biome
+    </ParamField>
+  </Accordion>
+</AccordionGroup>
+
+## Cave biomes
+
+Regions Unexplored adds 5 unique cave biomes:
+
+<ParamField name="TOGGLE_ANCIENT_DELTA" type="boolean" default="true">
+  Ancient underground delta caves
+</ParamField>
+
+<ParamField name="TOGGLE_BIOSHROOM_CAVES" type="boolean" default="true">
+  Caves filled with bioluminescent mushrooms
+</ParamField>
+
+<ParamField name="TOGGLE_PRISMACHASM" type="boolean" default="true">
+  Crystal-filled chasm caves
+</ParamField>
+
+<ParamField name="TOGGLE_REDSTONE_CAVES" type="boolean" default="true">
+  Caves rich in redstone ore
+</ParamField>
+
+<ParamField name="TOGGLE_SCORCHING_CAVES" type="boolean" default="true">
+  Hot volcanic caves
+</ParamField>
+
+## Nether biomes
+
+The mod adds 5 custom nether biomes:
+
+<ParamField name="TOGGLE_BLACKSTONE_BASIN" type="boolean" default="true">
+  Basin filled with blackstone
+</ParamField>
+
+<ParamField name="TOGGLE_GLISTERING_MEADOW" type="boolean" default="true">
+  Nether meadow with glistering blocks
+</ParamField>
+
+<ParamField name="TOGGLE_INFERNAL_HOLT" type="boolean" default="true">
+  Fiery woodland in the nether
+</ParamField>
+
+<ParamField name="TOGGLE_MYCOTOXIC_UNDERGROWTH" type="boolean" default="true">
+  Toxic mushroom undergrowth
+</ParamField>
+
+<ParamField name="TOGGLE_REDSTONE_ABYSS" type="boolean" default="true">
+  Deep abyss filled with redstone
+</ParamField>
+
+## World generation features
+
+<ParamField name="TOGGLE_CUSTOM_DIRTS" type="boolean" default="true">
+  Controls whether custom dirt types are used in surface generation. Disabling this will use vanilla dirt blocks instead of the mod's custom variants.
+</ParamField>
+
+## Configuration examples
+
+<Tabs>
+  <Tab title="Disable specific biomes">
+    ```toml config/regions_unexplored-common.toml
+    [overworld_biome_toggles]
+    # Disable desert biomes
+    TOGGLE_JOSHUA_DESERT = false
+    TOGGLE_SAGUARO_DESERT = false
+    TOGGLE_ICY_DESERT = false
+    
+    # Keep other biomes enabled
+    TOGGLE_BAOBAB_SAVANNA = true
+    TOGGLE_RAINFOREST = true
+    ```
+  </Tab>
+  
+  <Tab title="Enable only specific biomes">
+    ```toml config/regions_unexplored-common.toml
+    [overworld_biome_toggles]
+    # Disable all by default, then enable specific ones
+    TOGGLE_ALPHA_GROVE = false
+    TOGGLE_ARID_MOUNTAINS = false
+    # ... (set others to false)
+    
+    # Enable only forest biomes
+    TOGGLE_MAPLE_FOREST = true
+    TOGGLE_DECIDUOUS_FOREST = true
+    TOGGLE_EUCALYPTUS_FOREST = true
+    TOGGLE_REDWOODS = true
+    ```
+  </Tab>
+  
+  <Tab title="Vanilla-friendly setup">
+    ```toml config/regions_unexplored-common.toml
+    [overworld_biome_toggles]
+    # Keep most biomes enabled for variety
+    # Disable biomes that might conflict with specific mod packs
+    TOGGLE_CUSTOM_DIRTS = false  # Use vanilla dirt only
+    
+    [nether_biome_toggles]
+    # Disable nether biomes if using another nether overhaul
+    TOGGLE_BLACKSTONE_BASIN = false
+    TOGGLE_GLISTERING_MEADOW = false
+    TOGGLE_INFERNAL_HOLT = false
+    TOGGLE_MYCOTOXIC_UNDERGROWTH = false
+    TOGGLE_REDSTONE_ABYSS = false
+    ```
+  </Tab>
+</Tabs>
+
+<Warning>
+  Changing biome toggles only affects newly generated chunks. Existing chunks will retain their original biomes. To see changes, you must either:
+  - Generate a new world
+  - Explore new, previously ungenerated chunks
+  - Use external tools to regenerate existing chunks (advanced)
+</Warning>
+
+## Tips and best practices
+
+<Card title="Performance optimization" icon="gauge-high">
+  Disabling biomes you don't want can slightly improve world generation performance and reduce conflicts with other mods that add similar biomes.
+</Card>
+
+<Card title="Mod compatibility" icon="puzzle-piece">
+  If you're using multiple biome mods, you may want to disable overlapping biomes to prevent world generation from becoming too crowded or to maintain a specific theme.
+</Card>
+
+<Card title="Testing changes" icon="flask">
+  Create test worlds to verify your biome configuration before applying it to your main save. Use creative mode and `/locatebiome` commands to check biome generation.
+</Card>

@@ -1,0 +1,264 @@
+---
+title: Installation
+description: Install Regions Unexplored on Fabric or NeoForge mod loaders
+---
+
+Regions Unexplored supports both Fabric and NeoForge mod loaders for Minecraft 1.21.1. Follow the installation steps for your preferred loader below.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Minecraft 1.21.1" icon="cube">
+    Java Edition required
+  </Card>
+  <Card title="Mod loader" icon="puzzle-piece">
+    Fabric 0.18.4+ or NeoForge 21.1.218+
+  </Card>
+</CardGroup>
+
+<Warning>
+  Regions Unexplored requires **Biolith** and **Lithostitched** as dependencies. Both must be installed for the mod to function properly.
+</Warning>
+
+## Installation steps
+
+<Tabs>
+  <Tab title="Fabric">
+    <Steps>
+      <Step title="Install Fabric Loader">
+        Download and run the [Fabric installer](https://fabricmc.net/use/) for Minecraft 1.21.1.
+        
+        Select:
+        - **Minecraft Version**: 1.21.1
+        - **Loader Version**: 0.18.4 or higher
+        - **Installation Location**: Your default Minecraft directory
+        
+        Click "Install" to set up the Fabric profile.
+      </Step>
+
+      <Step title="Install Fabric API">
+        Fabric API is required for Regions Unexplored to run.
+        
+        Download [Fabric API 0.116.8+](https://modrinth.com/mod/fabric-api) for Minecraft 1.21.1 and place it in your `mods` folder.
+        
+        <Tip>
+          The mods folder is located at:
+          - **Windows**: `%APPDATA%\.minecraft\mods`
+          - **macOS**: `~/Library/Application Support/minecraft/mods`
+          - **Linux**: `~/.minecraft/mods`
+        </Tip>
+      </Step>
+
+      <Step title="Install dependencies">
+        Download and install the required dependencies in your `mods` folder:
+        
+        <CodeGroup>
+        ```bash Required dependencies
+        # Biolith (biome placement library)
+        # Version: 3.0.10 or higher for Fabric
+        https://modrinth.com/mod/biolith
+        
+        # Lithostitched (worldgen framework)
+        # Version: 1.5.7-fabric-1.21.1 or higher
+        https://modrinth.com/mod/lithostitched
+        ```
+        </CodeGroup>
+        
+        Both dependencies are available on Modrinth and CurseForge.
+      </Step>
+
+      <Step title="Install Regions Unexplored">
+        Download the latest Fabric version of Regions Unexplored from:
+        - [Modrinth](https://modrinth.com/mod/regions-unexplored)
+        - [GitHub Releases](https://github.com/UHQ-GAMES-MODS/RegionsUnexplored/releases)
+        
+        Place the `.jar` file in your `mods` folder.
+        
+        Your mods folder should now contain:
+        - `fabric-api-*.jar`
+        - `biolith-fabric-*.jar`
+        - `lithostitched-*-fabric-*.jar`
+        - `regions_unexplored-*-fabric.jar`
+      </Step>
+
+      <Step title="Launch Minecraft">
+        Start the Minecraft Launcher and select the **Fabric** profile. Launch the game.
+        
+        <Note>
+          First launch may take longer as Minecraft generates the mod configuration files and caches.
+        </Note>
+        
+        Create a new world to experience Regions Unexplored biomes. Existing worlds will only generate new biomes in unexplored chunks.
+      </Step>
+
+      <Step title="Optional: Install Mod Menu (recommended)">
+        For easier mod configuration, install [Mod Menu](https://modrinth.com/mod/modmenu).
+        
+        Regions Unexplored integrates with Mod Menu to provide in-game configuration screens for client and common settings.
+        
+        ```bash Optional enhancement
+        # Mod Menu 11.0.3 or higher
+        https://modrinth.com/mod/modmenu
+        ```
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="NeoForge">
+    <Steps>
+      <Step title="Install NeoForge">
+        Download the [NeoForge installer](https://neoforged.net/) for Minecraft 1.21.1.
+        
+        Select:
+        - **Minecraft Version**: 1.21.1
+        - **NeoForge Version**: 21.1.218 or higher
+        
+        Run the installer and choose "Install client" to set up the NeoForge profile.
+      </Step>
+
+      <Step title="Install dependencies">
+        Download and install the required dependencies in your `mods` folder:
+        
+        <CodeGroup>
+        ```bash Required dependencies
+        # Biolith (biome placement library)
+        # Version: 3.0.10 or higher for NeoForge
+        https://modrinth.com/mod/biolith
+        
+        # Lithostitched (worldgen framework)
+        # Version: 1.5.7-neoforge-1.21.1 or higher
+        https://modrinth.com/mod/lithostitched
+        ```
+        </CodeGroup>
+        
+        <Warning>
+          Make sure to download the **NeoForge** versions of these mods, not the Fabric versions.
+        </Warning>
+      </Step>
+
+      <Step title="Install Regions Unexplored">
+        Download the latest NeoForge version of Regions Unexplored from:
+        - [Modrinth](https://modrinth.com/mod/regions-unexplored)
+        - [GitHub Releases](https://github.com/UHQ-GAMES-MODS/RegionsUnexplored/releases)
+        
+        <Tip>
+          Look for files labeled with `neoforge` in the filename to ensure compatibility.
+        </Tip>
+        
+        Place the `.jar` file in your `mods` folder:
+        - **Windows**: `%APPDATA%\.minecraft\mods`
+        - **macOS**: `~/Library/Application Support/minecraft/mods`
+        - **Linux**: `~/.minecraft/mods`
+      </Step>
+
+      <Step title="Launch Minecraft">
+        Start the Minecraft Launcher and select the **NeoForge** profile. Launch the game.
+        
+        <Note>
+          NeoForge will validate all mods on startup. Any dependency issues will be reported in the pre-launch screen.
+        </Note>
+        
+        Create a new world to generate Regions Unexplored biomes from the start.
+      </Step>
+
+      <Step title="Verify installation">
+        In the main menu, check that Regions Unexplored appears in the mods list.
+        
+        You can access configuration options through the NeoForge mods screen:
+        - Click "Mods" in the main menu
+        - Find "Regions Unexplored" in the list
+        - Client and Common configuration files are available
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## Server installation
+
+To run Regions Unexplored on a server:
+
+<Steps>
+  <Step title="Install the server software">
+    Download and set up either:
+    - [Fabric Server](https://fabricmc.net/use/server/) with Fabric API
+    - [NeoForge Server](https://neoforged.net/)
+  </Step>
+
+  <Step title="Add the mods">
+    Place the following in your server's `mods` folder:
+    - Regions Unexplored (same version as clients)
+    - Biolith (matching loader version)
+    - Lithostitched (matching loader version)
+    - Fabric API (Fabric servers only)
+  </Step>
+
+  <Step title="Generate new world">
+    <Warning>
+      For best results, start with a fresh world. Adding Regions Unexplored to existing worlds will only generate new biomes in unexplored chunks.
+    </Warning>
+    
+    Delete the existing `world` folder (after backing up!) or change the `level-name` in `server.properties` to generate a new world with all biomes.
+  </Step>
+
+  <Step title="Configure and launch">
+    Adjust settings in the config files located at:
+    ```
+    config/regions unexplored/regions_unexplored-common.toml
+    ```
+    
+    Start your server with the appropriate launch script.
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Game crashes on startup" icon="circle-exclamation">
+    **Possible causes:**
+    - Missing dependencies (Biolith or Lithostitched)
+    - Wrong mod loader version (Fabric mod on NeoForge or vice versa)
+    - Incompatible Minecraft version
+    
+    **Solutions:**
+    - Check that all dependencies are installed
+    - Verify you downloaded the correct loader version
+    - Ensure all mods are for Minecraft 1.21.1
+    - Check the crash log in `crash-reports` folder for specific errors
+  </Accordion>
+
+  <Accordion title="Biomes not generating" icon="map">
+    **Solutions:**
+    - Create a **new world** - existing worlds only generate new biomes in unexplored areas
+    - Use `/locatebiome regions_unexplored:` commands to find specific biomes
+    - Check that Biolith is properly installed (it handles biome placement)
+    - Verify configuration files haven't disabled biome generation
+  </Accordion>
+
+  <Accordion title="Mod conflicts" icon="triangle-exclamation">
+    Some worldgen mods may conflict with Regions Unexplored. See the [compatibility guide](/compatibility) for known issues and solutions.
+    
+    If you encounter conflicts:
+    - Test with only Regions Unexplored and its dependencies
+    - Add other mods one at a time to identify conflicts
+    - Check configuration options for biome placement settings
+  </Accordion>
+
+  <Accordion title="Performance issues" icon="gauge-high">
+    **Optimization tips:**
+    - Install performance mods like Sodium (Fabric) or Embeddium (NeoForge)
+    - Reduce render distance in video settings
+    - Allocate more RAM to Minecraft (4-6GB recommended)
+    - Disable particle effects in settings if needed
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Compatibility" icon="puzzle-piece" href="/compatibility">
+    Check compatibility with other popular mods
+  </Card>
+  <Card title="Report issues" icon="bug" href="https://github.com/UHQ-GAMES-MODS/RegionsUnexplored/issues">
+    Found a problem? Report it on GitHub
+  </Card>
+</CardGroup>

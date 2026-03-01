@@ -1,0 +1,423 @@
+---
+title: Building
+description: Build and package Regions Unexplored for distribution
+---
+
+## Quick build
+
+To build all mod variants (Fabric and NeoForge):
+
+```bash
+./gradlew build
+```
+
+Built JAR files will be located in:
+- `build/libs/fabric-21.1/` - Fabric build
+- `build/libs/neoforge-21.1/` - NeoForge build
+
+<Info>The version number is set in `build.gradle.kts` as `version = "0.6+indev"`</Info>
+
+## Building specific loaders
+
+You can build for a specific mod loader to save time:
+
+<Tabs>
+  <Tab title="Fabric">
+    Build only the Fabric version:
+    
+    ```bash
+    ./gradlew :fabric:21.1:build
+    ```
+    
+    Output: `build/libs/fabric-21.1/regions_unexplored-fabric-21.1-0.6+indev.jar`
+  </Tab>
+  
+  <Tab title="NeoForge">
+    Build only the NeoForge version:
+    
+    ```bash
+    ./gradlew :neoforge:21.1:build
+    ```
+    
+    Output: `build/libs/neoforge-21.1/regions_unexplored-neoforge-21.1-0.6+indev.jar`
+  </Tab>
+</Tabs>
+
+## Build tasks
+
+<AccordionGroup>
+  <Accordion title="clean" icon="broom">
+    Remove all build artifacts:
+    
+    ```bash
+    ./gradlew clean
+    ```
+    
+    Use this when you want a fresh build or are experiencing caching issues.
+  </Accordion>
+  
+  <Accordion title="build" icon="hammer">
+    Compile code, run tests, and create JAR files:
+    
+    ```bash
+    ./gradlew build
+    ```
+    
+    This is the standard build command that produces distributable JARs.
+  </Accordion>
+  
+  <Accordion title="assemble" icon="box">
+    Create JARs without running tests:
+    
+    ```bash
+    ./gradlew assemble
+    ```
+    
+    Faster than `build` when you don't need to run tests.
+  </Accordion>
+  
+  <Accordion title="jar" icon="jar">
+    Build JAR files for all targets:
+    
+    ```bash
+    ./gradlew jar
+    ```
+    
+    Equivalent to `assemble` for this project.
+  </Accordion>
+  
+  <Accordion title="runData" icon="database">
+    Generate worldgen data files:
+    
+    <CodeGroup>
+      ```bash Fabric
+      ./gradlew :fabric:21.1:runData
+      ```
+      
+      ```bash NeoForge
+      ./gradlew :neoforge:21.1:runData
+      ```
+    </CodeGroup>
+    
+    Generated files are placed in `src/shared/21.1/main/generated/`
+  </Accordion>
+</AccordionGroup>
+
+## Build output structure
+
+After running `./gradlew build`, your build directory will contain:
+
+```
+build/
+├── libs/
+│   ├── fabric-21.1/
+│   │   └── regions_unexplored-fabric-21.1-0.6+indev.jar
+│   └── neoforge-21.1/
+│       └── regions_unexplored-neoforge-21.1-0.6+indev.jar
+├── classes/               # Compiled Java classes
+├── resources/             # Processed resources
+└── tmp/                   # Temporary build files
+```
+
+<Tip>Only the JAR files in `build/libs/` are needed for distribution.</Tip>
+
+## Clean builds
+
+For a completely clean build (recommended before releases):
+
+<Steps>
+  <Step title="Clean all build artifacts">
+    ```bash
+    ./gradlew clean
+    ```
+  </Step>
+  
+  <Step title="Build everything">
+    ```bash
+    ./gradlew build
+    ```
+  </Step>
+  
+  <Step title="Verify outputs">
+    Check that both JAR files were created:
+    
+    ```bash
+    ls -lh build/libs/*/regions_unexplored-*.jar
+    ```
+  </Step>
+</Steps>
+
+## JAR file contents
+
+Each built JAR contains:
+
+<Tabs>
+  <Tab title="Code">
+    - Compiled Java classes from `common/` and loader-specific modules
+    - Mixin configurations
+    - Access widener definitions
+  </Tab>
+  
+  <Tab title="Resources">
+    - Textures, models, sounds from `assets/`
+    - Worldgen data, recipes, loot tables from `data/`
+    - Generated worldgen JSON files
+  </Tab>
+  
+  <Tab title="Metadata">
+    **Fabric:**
+    - `fabric.mod.json` - Mod metadata and entrypoints
+    - Dependencies: Fabric API, Biolith, Lithostitched
+    
+    **NeoForge:**
+    - `META-INF/mods.toml` - Mod metadata
+    - Dependencies: Biolith, Lithostitched
+  </Tab>
+</Tabs>
+
+## Version management
+
+The mod version is defined in `build.gradle.kts`:
+
+```kotlin
+group = "net.regions_unexplored"
+version = "0.6+indev"
+```
+
+<Steps>
+  <Step title="Update version number">
+    Edit the `version` field in `build.gradle.kts`:
+    
+    ```kotlin
+    version = "1.0.0"
+    ```
+  </Step>
+  
+  <Step title="Clean and rebuild">
+    ```bash
+    ./gradlew clean build
+    ```
+  </Step>
+  
+  <Step title="Verify JAR names">
+    JAR files will reflect the new version:
+    - `regions_unexplored-fabric-21.1-1.0.0.jar`
+    - `regions_unexplored-neoforge-21.1-1.0.0.jar`
+  </Step>
+</Steps>
+
+<Note>Follow semantic versioning (MAJOR.MINOR.PATCH) for release versions.</Note>
+
+## Testing builds
+
+Before distributing, test your builds:
+
+<Tabs>
+  <Tab title="Development Environment">
+    Test in the development environment first:
+    
+    <CodeGroup>
+      ```bash Fabric
+      ./gradlew :fabric:21.1:runClient
+      ```
+      
+      ```bash NeoForge
+      ./gradlew :neoforge:21.1:runClient
+      ```
+    </CodeGroup>
+  </Tab>
+  
+  <Tab title="Production Environment">
+    Test the built JAR in a production Minecraft instance:
+    
+    <Steps>
+      <Step title="Install launcher">
+        Install the Fabric or NeoForge launcher for Minecraft 1.21.1
+      </Step>
+      
+      <Step title="Install dependencies">
+        Add required mods to `mods/` folder:
+        - Biolith 3.0.10
+        - Lithostitched 1.5.7
+        - (Fabric only) Fabric API 0.116.8
+      </Step>
+      
+      <Step title="Install your build">
+        Copy the JAR from `build/libs/` to the `mods/` folder
+      </Step>
+      
+      <Step title="Test functionality">
+        Launch the game and verify:
+        - Mod loads without errors
+        - Custom biomes generate
+        - Blocks and items work correctly
+        - No conflicts with other mods
+      </Step>
+    </Steps>
+  </Tab>
+  
+  <Tab title="Server Testing">
+    Test on a dedicated server:
+    
+    <Steps>
+      <Step title="Run server build task">
+        <CodeGroup>
+          ```bash Fabric
+          ./gradlew :fabric:21.1:runServer
+          ```
+          
+          ```bash NeoForge
+          ./gradlew :neoforge:21.1:runServer
+          ```
+        </CodeGroup>
+      </Step>
+      
+      <Step title="Verify worldgen">
+        Create a new world and verify biomes generate correctly
+      </Step>
+      
+      <Step title="Test multiplayer">
+        Connect with a client and test gameplay features
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## Build optimization
+
+### Parallel builds
+
+The project is configured for parallel builds in `gradle.properties`:
+
+```properties
+org.gradle.parallel=true
+```
+
+This allows Gradle to build multiple modules simultaneously.
+
+### Build cache
+
+Enable Gradle's build cache for faster rebuilds:
+
+```bash
+./gradlew build --build-cache
+```
+
+Or enable it globally in `~/.gradle/gradle.properties`:
+
+```properties
+org.gradle.caching=true
+```
+
+### Daemon
+
+The Gradle daemon keeps Gradle running in the background for faster builds. It's enabled by default.
+
+To stop the daemon:
+
+```bash
+./gradlew --stop
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Out of memory during build" icon="memory">
+    Increase the Gradle JVM memory in `gradle.properties`:
+    
+    ```properties
+    org.gradle.jvmargs=-Xmx6G
+    ```
+    
+    The default is 4GB, but complex builds may need more.
+  </Accordion>
+  
+  <Accordion title="Build fails with 'Task not found'" icon="circle-exclamation">
+    Ensure you're using the correct task path:
+    
+    ```bash
+    # Correct
+    ./gradlew :fabric:21.1:build
+    
+    # Incorrect
+    ./gradlew fabric:build
+    ```
+    
+    The version number (21.1) is required in the task path.
+  </Accordion>
+  
+  <Accordion title="JAR is missing resources" icon="box-open">
+    Verify resources are in the correct locations:
+    - Assets: `src/common/main/resources/assets/`
+    - Data: `src/common/main/resources/data/`
+    - Generated: `src/shared/21.1/main/generated/`
+    
+    Run `./gradlew clean build` for a fresh build.
+  </Accordion>
+  
+  <Accordion title="Gradle wrapper not found" icon="terminal">
+    If `./gradlew` doesn't work, ensure the wrapper is executable:
+    
+    ```bash
+    chmod +x gradlew
+    ```
+    
+    On Windows, use `gradlew.bat` instead.
+  </Accordion>
+  
+  <Accordion title="Dependency resolution fails" icon="download">
+    Clear Gradle's cache and retry:
+    
+    ```bash
+    rm -rf ~/.gradle/caches
+    ./gradlew build --refresh-dependencies
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Publishing
+
+When ready to publish your build:
+
+<Steps>
+  <Step title="Update version">
+    Set a release version in `build.gradle.kts` (remove `+indev`):
+    
+    ```kotlin
+    version = "1.0.0"
+    ```
+  </Step>
+  
+  <Step title="Clean build">
+    ```bash
+    ./gradlew clean build
+    ```
+  </Step>
+  
+  <Step title="Test thoroughly">
+    Test both Fabric and NeoForge builds in production environments
+  </Step>
+  
+  <Step title="Upload to platforms">
+    Upload the JAR files to:
+    - [Modrinth](https://modrinth.com/mod/regions-unexplored)
+    - CurseForge
+    - GitHub Releases
+    
+    Ensure you upload the correct JAR for each platform (Fabric vs NeoForge)
+  </Step>
+</Steps>
+
+<Warning>Always test builds thoroughly before publishing. Check for compatibility with the required Biolith and Lithostitched versions.</Warning>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Getting started" icon="rocket" href="./getting-started">
+    Learn how to set up your development environment
+  </Card>
+  
+  <Card title="Project structure" icon="folder-tree" href="./project-structure">
+    Understand the codebase organization
+  </Card>
+</CardGroup>

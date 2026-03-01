@@ -1,0 +1,382 @@
+---
+title: Project structure
+description: Understanding the Regions Unexplored codebase organization and architecture
+---
+
+## Overview
+
+Regions Unexplored uses a multi-loader architecture powered by the Cloche build system, allowing the same codebase to target both Fabric and NeoForge mod loaders.
+
+<Info>This architecture minimizes code duplication by separating common logic from loader-specific implementations.</Info>
+
+## Source directory layout
+
+The `src/` directory is organized into four main sections:
+
+```
+src/
+├── common/           # Shared code for all loaders
+├── fabric/           # Fabric-specific implementations
+├── neoforge/         # NeoForge-specific implementations
+└── shared/           # Version-specific shared code
+```
+
+### Common module
+
+The `common/` directory contains platform-agnostic code that works across all mod loaders:
+
+<AccordionGroup>
+  <Accordion title="src/common/main/java/net/regions_unexplored/" icon="folder">
+    <Tabs>
+      <Tab title="Core">
+        - `RegionsUnexplored.java` - Main mod class and initialization
+        - `registry/` - Registration of blocks, items, entities, features
+        - `platform/` - Platform abstraction layer
+      </Tab>
+      
+      <Tab title="Content">
+        - `block/` - Custom block implementations
+          - `sapling/` - Tree sapling mechanics
+          - `set/` - Block families (planks, stairs, slabs)
+          - `compat/` - Cross-mod compatibility
+        - `item/` - Custom items and behaviors
+        - `entity/` - Custom entities and AI
+      </Tab>
+      
+      <Tab title="World Generation">
+        - `world/` - Worldgen features and systems
+          - `features/` - Custom feature types
+            - `foliageplacers/` - Tree foliage generation
+            - `treedecorators/` - Tree decoration (vines, etc.)
+          - `level/block/` - Biome-specific blocks
+            - `alpha/` - Alpha biome blocks
+            - `cave/` - Cave biome blocks
+            - `nether/` - Nether biome blocks
+            - `forest_dirt/` - Forest floor variants
+            - `plains_dirt/` - Plains floor variants
+            - `other_dirt/` - Other terrain blocks
+            - `leaves/` - Custom leaf blocks
+            - `plant/` - Vegetation blocks
+      </Tab>
+      
+      <Tab title="Client">
+        - `client/` - Client-side rendering
+          - `color/` - Block and item coloring
+          - `particle/` - Particle effects
+            - `spore/` - Spore particle system
+          - `renderer/` - Custom renderers
+            - `block/` - Block entity rendering
+          - `util/` - Client utilities
+      </Tab>
+      
+      <Tab title="Configuration">
+        - `config/` - User-facing configuration
+        - `internal/config/` - Internal config system
+          - `annotation/` - Config annotations
+          - `gui/` - Config GUI components
+      </Tab>
+      
+      <Tab title="Mixins">
+        - `mixin/` - Mixin classes for patching Minecraft code
+          - `CropPlacerMixin` - Crop placement modifications
+          - `EatBlockGoalMixin` - Animal eating behavior
+          - `NetherrackBlockMixin` - Netherrack mechanics
+          - `TrunkPlacerMixin` - Tree trunk placement
+      </Tab>
+    </Tabs>
+  </Accordion>
+  
+  <Accordion title="src/common/main/resources/" icon="image">
+    - `assets/regions_unexplored/` - Textures, models, sounds
+    - `data/regions_unexplored/` - Recipes, loot tables, tags
+  </Accordion>
+  
+  <Accordion title="src/common/main/regions_unexplored.mixins.json" icon="code">
+    Mixin configuration file defining:
+    - Required mixins for all platforms
+    - Compatibility level (Java 21)
+    - Refmap location
+  </Accordion>
+  
+  <Accordion title="src/common/main/regions_unexplored.accesswidener" icon="lock-open">
+    Access widener file to access private/protected Minecraft code
+  </Accordion>
+</AccordionGroup>
+
+### Fabric module
+
+`src/fabric/21.1/main/` contains Fabric-specific implementations:
+
+<CardGroup cols={2}>
+  <Card title="RegionsUnexploredFabric.java" icon="file-code">
+    Fabric mod entrypoint and initialization
+  </Card>
+  
+  <Card title="client/RegionsUnexploredFabricClient.java" icon="desktop">
+    Client-side Fabric initialization
+  </Card>
+  
+  <Card title="compat/" icon="puzzle-piece">
+    Fabric-specific mod integrations (e.g., Mod Menu)
+  </Card>
+  
+  <Card title="platform/" icon="layer-group">
+    Fabric implementations of platform abstractions
+  </Card>
+</CardGroup>
+
+<Accordion title="Fabric mixins">
+  Located in `src/fabric/21.1/main/regions_unexplored.fabric.mixins.json`
+  
+  These are Fabric-specific mixins that complement the common mixins.
+</Accordion>
+
+### NeoForge module
+
+`src/neoforge/21.1/main/` contains NeoForge-specific implementations:
+
+<CardGroup cols={2}>
+  <Card title="RegionsUnexploredNeo.java" icon="file-code">
+    NeoForge mod entrypoint and initialization
+  </Card>
+  
+  <Card title="RegionsUnexploredNeoClient.java" icon="desktop">
+    Client-side NeoForge initialization
+  </Card>
+  
+  <Card title="platform/" icon="layer-group">
+    NeoForge implementations of platform abstractions
+  </Card>
+  
+  <Card title="registry/" icon="list">
+    NeoForge-specific registry helpers
+  </Card>
+</CardGroup>
+
+<Accordion title="NeoForge mixins">
+  Located in `src/neoforge/21.1/main/regions_unexplored.neoforge.mixins.json`
+  
+  These are NeoForge-specific mixins.
+</Accordion>
+
+### Shared version-specific code
+
+`src/shared/21.1/main/` contains code shared between loaders for Minecraft 1.21.1:
+
+<Accordion title="generated/" icon="gears">
+  Auto-generated worldgen data from data generators:
+  - `data/regions_unexplored/worldgen/biome/` - Biome definitions
+  - `data/regions_unexplored/worldgen/placed_feature/` - Placed features
+  - `data/regions_unexplored/worldgen/configured_feature/` - Configured features
+  - `data/regions_unexplored/worldgen/processor_list/` - Structure processors
+  
+  <Warning>Do not manually edit these files - they are regenerated by data generators.</Warning>
+</Accordion>
+
+## Package organization
+
+The main package `net.regions_unexplored` follows this structure:
+
+```
+net.regions_unexplored/
+├── RegionsUnexplored.java          # Main mod class
+├── block/                          # Block implementations
+│   ├── compat/                     # Cross-mod block compat
+│   ├── sapling/                    # Sapling logic
+│   └── set/                        # Block families
+├── client/                         # Client-side code
+│   ├── color/                      # Color providers
+│   ├── particle/                   # Particles
+│   ├── renderer/                   # Renderers
+│   └── util/                       # Client utilities
+├── config/                         # Configuration
+├── entity/                         # Entities
+│   ├── client/                     # Entity rendering
+│   └── custom/                     # Custom entity types
+├── internal/                       # Internal systems
+│   └── config/                     # Config framework
+├── item/                           # Items
+│   ├── behaviour/                  # Item behaviors
+│   └── items/                      # Item implementations
+├── mixin/                          # Mixin patches
+├── platform/                       # Platform abstraction
+├── registry/                       # Registration
+│   ├── data/                       # Data-driven content
+│   └── tag/                        # Tag helpers
+├── sound/                          # Sound events
+├── util/                           # Utilities
+└── world/                          # Worldgen
+    ├── features/                   # Feature types
+    │   ├── foliageplacers/        # Foliage placers
+    │   └── treedecorators/        # Tree decorators
+    └── level/block/               # World blocks
+        ├── alpha/                 # Alpha biomes
+        ├── cave/                  # Cave biomes
+        ├── forest_dirt/           # Forest terrain
+        ├── leaves/                # Leaf blocks
+        ├── nether/                # Nether biomes
+        ├── other/                 # Misc blocks
+        ├── other_dirt/            # Misc terrain
+        ├── plains_dirt/           # Plains terrain
+        └── plant/                 # Plants
+```
+
+## Build configuration
+
+The Cloche build system is configured in `build.gradle.kts`:
+
+<Steps>
+  <Step title="Metadata block">
+    Defines mod information:
+    ```kotlin
+    metadata {
+        modId = "regions_unexplored"
+        name = "Regions Unexplored"
+        description = "..."
+        license = "All Rights Reserved"
+        author("UHQ_Games")
+        author("KirboSoftware")
+        author("Apollo")
+    }
+    ```
+  </Step>
+  
+  <Step title="Common block">
+    Configures shared code:
+    ```kotlin
+    common {
+        mixins.from(file("..."))
+        accessWideners.from(file("..."))
+        dependencies { ... }
+    }
+    ```
+  </Step>
+  
+  <Step title="Loader-specific blocks">
+    Configures Fabric and NeoForge targets:
+    ```kotlin
+    fabric("fabric:21.1") {
+        minecraftVersion = "1.21.1"
+        loaderVersion = "0.18.4"
+        dependencies { fabricApi("0.116.8") }
+    }
+    
+    neoforge("neoforge:21.1") {
+        minecraftVersion = "1.21.1"
+        loaderVersion = "21.1.218"
+    }
+    ```
+  </Step>
+</Steps>
+
+## Key architectural patterns
+
+### Platform abstraction
+
+The `platform/` package provides an abstraction layer for loader-specific functionality:
+
+<CodeGroup>
+  ```java Common Interface
+  // src/common/main/java/net/regions_unexplored/platform/
+  public interface Platform {
+      boolean isModLoaded(String modId);
+      Path getConfigDir();
+      // ... other platform-specific methods
+  }
+  ```
+  
+  ```java Fabric Implementation
+  // src/fabric/21.1/main/java/net/regions_unexplored/platform/
+  public class FabricPlatform implements Platform {
+      public boolean isModLoaded(String modId) {
+          return FabricLoader.getInstance().isModLoaded(modId);
+      }
+  }
+  ```
+  
+  ```java NeoForge Implementation
+  // src/neoforge/21.1/main/java/net/regions_unexplored/platform/
+  public class NeoForgePlatform implements Platform {
+      public boolean isModLoaded(String modId) {
+          return ModList.get().isLoaded(modId);
+      }
+  }
+  ```
+</CodeGroup>
+
+### Registry pattern
+
+All game objects are registered through the `registry/` package, which handles loader differences:
+
+```java
+public class RuBlocks {
+    public static final DeferredRegister<Block> BLOCKS = ...;
+    
+    public static final RegistrySupplier<Block> EXAMPLE_BLOCK = 
+        BLOCKS.register("example_block", () -> new Block(...));
+}
+```
+
+### Mixin usage
+
+Mixins modify Minecraft's code at runtime. The mod uses mixins for:
+- Custom crop placement logic
+- Animal eating behavior modifications
+- Tree generation enhancements
+- Netherrack mechanics
+
+<Tip>Keep mixins minimal and focused. Prefer events or hooks when available.</Tip>
+
+## Resource structure
+
+Assets and data follow Minecraft's standard structure:
+
+<Tabs>
+  <Tab title="Assets">
+    ```
+    assets/regions_unexplored/
+    ├── blockstates/       # Block state definitions
+    ├── lang/              # Translations
+    ├── models/
+    │   ├── block/        # Block models
+    │   └── item/         # Item models
+    ├── sounds/           # Sound files
+    ├── sounds.json       # Sound definitions
+    └── textures/
+        ├── block/        # Block textures
+        ├── entity/       # Entity textures
+        ├── item/         # Item textures
+        └── particle/     # Particle textures
+    ```
+  </Tab>
+  
+  <Tab title="Data">
+    ```
+    data/regions_unexplored/
+    ├── loot_table/           # Loot tables
+    ├── recipe/               # Crafting recipes
+    ├── tags/                 # Tags
+    │   ├── block/
+    │   ├── item/
+    │   └── biome/
+    └── worldgen/             # World generation
+        ├── biome/            # Biome definitions
+        ├── configured_feature/
+        ├── placed_feature/
+        ├── processor_list/
+        └── structure/
+    ```
+  </Tab>
+</Tabs>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Building the mod" icon="hammer" href="./building">
+    Learn how to build and package the mod
+  </Card>
+  
+  <Card title="Getting started" icon="rocket" href="./getting-started">
+    Set up your development environment
+  </Card>
+</CardGroup>
